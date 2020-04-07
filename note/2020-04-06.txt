@@ -1,0 +1,60 @@
+1. JDK 설치
+Sun	Spec
+1) J2SE(Standard Edition)
+-> JDK만 설치...
+- JAVA Application
+- JDBC
+
+(SE 스펙  : JVM 안에서만 실행되는 구조 / HW > OS > JDK [JVM [ java ]]) > Server (Tomcat : JDK 위에 탑재 되고, jdk에서 )
+
+서버 사이드가 반드시 필요한 스펙 (웹서버를 필요로 하지 않는 스펙, 나누지 않아도 되는 스펙)
+- Local Machine에서만 사용할 때 필요
+
+
+2) J2EE(Enterprize Edition)
+--> JDK 설치 + 서버
+- web Program
+- Spring Framework
+
+웹서버를 필요로 하는 스펙
+클라이언트 사이드와 서버 사이드로 나뉘어져 있어야 한다
+
+(EE 스펙 : JVM 이외에 서버에서 돌아가는 구조)
+
+DB 연결하는 부분까지는 JVM에서 돌아감
+
+
+
+www.daum.net/index.html
+203.247.6.12:7777/index.html
+
+클라이언트 : 요청 - 서버 상에 존재하는 페이지
+서버 : 요청을 처리하고 응답하는 역할 (웹서버 필요)
+
+Web Program -- servlet, jsp / DJango
+
+
+
+JDK, JRE, JVM 비교
+- JDK 설치하면 JRE가 자동으로 설치
+- JRE : 미리 만들어진 라이브러리를 묶어놓은 환경 (API = library) -> rt.jar (문서로 만들어 놓은 것이 API Doc)
+
+JDK > JRE(API) > JVM > A.class
+
+
+.java와 .class 파일
+- .java는 원시 소스 코드 파일
+- .class는 기계어로 된 실행 파일
+
+원시 파일 코드는 jdk1.8.0_201폴더 내에 src.zip 
+src내에 .java 파일로 되어 있음
+
+rt.jar / src.zip / API Doc
+
+
+모든 에디터에서는 src는 소스를 의미하는데
+source의 약자
+이 안에는 프로그램만 들어간다.
+
+html, css, javascript -> 아니다
+그리고 java -> 프로그램이다
