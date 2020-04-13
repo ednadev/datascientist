@@ -1,0 +1,52 @@
+* Object Aid
+1. Help - Eclipse Marketplace... or Install New Software..
+2. Add -> ObjectAidTool / http://www.objectaid.com/update/current
+3. ObjectAid UML Explorer 체크하고 Next
+4. 클래스 다이어그램, 시퀀스 다이어그램 등 .. 클래스 다이어그램만 사용
+5. accept 하고 finish
+6. 진행중 security warning 창이 뜨면 'Install anyway'
+7. 이클립스 재부팅해야지 사용할 수 있다. 'Restart Now' 클릭
+
+사용하려면
+프로젝트 오른쪽 마우스 -> New - Other : "ObjectAid Class Diagram' 있으면 설치 완료!
+ProductServiceUML
+service, step3.test, vo -> 확장
+
+
+ProductService는 Product를 인자값으로 가지고 온다.
+Service와 VO의 관계는 hasing! 각각의 인자값으로 헤징하고 있다.
+
+Test는 VO를 가지고 있는 Service를 가지고 있다.
+Test : 값 집어넣고 메소드 호출하는 역할
+
+--> 클래스 다이어그램으로 나타낼 줄 알아야 한다.
+클래스 간의 Association 관계가 어떤지를 확인하기 위해선 UML
+
+오른쪽 마우스 클릭 : Option -> depend.. 체크
+
+
+Service가 Product를 의존 -> Service가 Product를 가지니까
+Service가 Product가 없으면 기능을 하지 못하므로 Product에 의존한다고 생각하면 된다.
+
+의존한다는 것은 누가 누구를 필요로 하는지만 파악하면 된다! 헤징하는 애가 의존한다고 생각하면 된다.
+필요하기 때문에 의존하는 것!
+
+오른쪽 버튼으로 Save as Image
+폴더 만든 곳에 저장 ProductServiceUML.gif
+
+Refresh는 F5
+
+
+- 한 명, 전체, 아예 없거나 --> search 조건,,
+
+VO클래스를 Domain Object라고도 함!
+
+
+* 패키지 지정
+com.encore.vo
+
+CRUD
+Create---vo생성---1줄 추가
+Reading --vo가져옴 -- 1, many가져옴 --> 검색 (Getter) 
+Update--vo정보 수정--1줄 중에 특정 컬럼정보 수정 (Setter)
+Delete--vo삭제 --1줄 삭제
