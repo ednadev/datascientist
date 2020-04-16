@@ -35,7 +35,7 @@ public class OutletStoreServiceTest {
 		//4. Service 객체를 생성....메소드를 호출...
 		OutletStoreService service = new OutletStoreService();
 		
-		Customer selectCustomer = customers[0];
+		Customer selectCustomer = customers[2];
 		
 		String[] products = service.getAllProductMaker(selectCustomer);
 		System.out.println(selectCustomer.getName() + " 님이 구매하신 제품명 입니다.");
@@ -75,19 +75,13 @@ public class OutletStoreServiceTest {
 		
 		
 		System.out.println("\n======  5. 평균가 이상되는 상품 검색 =============");
-		System.out.println("해당 상품의 평균가는 " + service.avgPrice(customers[0]) + "원 입니다.");
-		for(Product product : service.getMoreAvgProduct(selectCustomer)) {
-			if(product!=null) System.out.println(product.getMaker() + ", " + product.getPrice());
+		if(selectCustomer.getProducts()!=null) {
+			System.out.println("해당 상품의 평균가는 " + service.avgPrice(selectCustomer) + "원 입니다.");
+			for(Product product : service.getMoreAvgProduct(selectCustomer)) {
+				System.out.println(product.getMaker() + ", " + product.getPrice());
+			}
+
 		}
-
-/*		
-		Product[ ] avgPro=service.getMoreAvgProduct(customers[0]);
-		System.out.println("해당 상품의 평균가는 "+service.avgPrice(customers[0])+"원 입니다");
-		System.out.println(customers[0].getName()+" 님의 상품중에 평균가 이상되는 상품입니다.");
-		for(Product p : avgPro) {
-			if(p==null)continue;
-			System.out.println(p.getProduct());
-		}	*/
+		
 	}
-
 }

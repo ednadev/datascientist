@@ -75,10 +75,12 @@ public class OutletStoreService {
 
 	public int avgPrice(Customer customer) {
 		int sum = 0;
-		for(Product product : customer.getProducts()) {
-			sum += product.getPrice();
+		if(customer.getProducts()!=null) {
+			for(Product product : customer.getProducts()) {
+				sum += product.getPrice();
+			}
 		}
-		return 0;
+		return sum/customer.getProducts().length;
 	}
 	
 }
