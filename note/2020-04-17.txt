@@ -1,0 +1,156 @@
+오늘 수업은 컬렉션!
+스레드, 스트림, 소켓  --> JDBC (SQL) : 주식중개프로그램
+
+Interface는 다중상속이 가능하다
+자바가 단일상속만 가능한 이유? 부모의 서로 다른 기능을 물려받는데 이름이 똑같으면 문제가 생김.. 필드도 마찬가지
+
+인터페이스는 구현부가 없다.
+이름이 같아도 문제가 없다. 변수.. 필드가 없으므로 문제가 없다
+상수는 상관 없음.. 필드가 아니기에 중복이 될 수가 없다
+
+자바의 제약사항.. 다중상속이 안되므로 인터페이스로 해결한다? NO! 인터페이스는 템플릿
+해결책은 헤징! 다중 상속 필요 없이 끼워넣으면 되니까
+
+class 인어공주 extends Woman, Fish.. 불가능!
+Woman을 상속, Fish를 헤징!
+-- 상속과 헤징의 차이점 : 물려받아 쓰거나, 끼워 쓰거나 일뿐 차이는 없다
+
+
+--
+
+public abstract
+abstract public
+--> Test에서 오류! 추상이 조금이라도 있으면 추상클래스 abstract 키워드로 인해 객체 생성이 되지 않는다.
+
+interface와 abstract 차이
+interface는 완벽히 미완 (완벽한 추상) -- 용도 : 완벽한 template..약속!
+abstract는 부분적인 미완 (부분적인 추상) -- 추상클래스! 용도 : 
+
+wide TV
+capsion TV
+고해상도 TV..
+
+기존에 있는 TV를 상속!
+전략적으로 상속하려면 기존 TV 기능에서 화면처리 부분에 따라 ..
+모든걸 그대로 물려주는데 딱 하나만 추상으로 물려주는 것!
+화면처리만 오버라이딩 하는 것을 추상클래스의 쓰임새
+
+공통적인 성질을 물려줌으로써 TV를 만든다..
+서로 다른 TV로 만들어져야 하는 다형성! 용도
+
+--
+
+추상
+abstract
+ : weak (약한), 미완성, 불안정한 존재라고 느꼈지만..
+오히려 반대 .. abstract가 붙은 애들은 절대제왕
+객체 생성 대상이 안됨..
+절대로 sub급 취급을 당하지 않는 것이 abstract
+abstract를 상속받은 자식들은 구멍을 무조건 메꿔야 한다. ->abstract은 super급!
+
+
+..
+
+Access Modifier(접근지정자) : public, private, (default - 아무것도 붙지 않은 것), protected
+--> 접근 지정 범위
+ : private(같은 클래스)
+     < default(같은 패키지)
+     < protected(같은 폴더 = 같은 패키지.. default랑 같지만 상속 관계에서는 public으로 둔갑)
+     < public(import만 해주면 다 접근 가능)
+Usage Modifier : abstract, static, final
+
+
+array : 클래스가 없다.. 메소드 메소드 기능이 없음
+
+vector
+ -add()
+ -remove()
+
+리턴타입 꼼꼼하게 봐야한다
+
+자식에서는 부모(super)가 불려져야 한다.
+
+
+
+
+..
+<Collection> java.util 패키지
+객체들을 저장하는 특징을 다루는 것 -> Collection API
+인터페이스의 특징을 다루는 게 특징!
+api에서 java.util -> Collection -> Tree -> Interface Hierarchy
+가장 원시적인 방법으로 자료(객체)를 저장
+Key Point! 중복 됨, 순서가 없는 것
+
+Collection
+ <--(extends) Set : Collection 다음으로 원시적인 저장법 (순서가 없다, 중복은 안 됨)
+ 		-> Unique 
+ <--(extends) List : 시작점과 끝점을 가지면서 환원형으로 자료를 저장 (배열과 같음 = index 시스템으로 돌아간다 / 중복은 되지만, 순서가 있다)
+ 		-> Order
+
+Map은 Collection의 하위 자식이 아님
+collection에서 볼 수 없는 특징을 가졌기에
+collection의 계보를 잇지만.. 다름
+Map : key - value 쌍으로 자료를 저장
+
+1 - A, 2 - B, 3 - C, 4 - A..
+ (순서 없음, 키는 중복이 안되고, value는 중복이 됨)
+ key를 찾고 key에 연결된 value를 찾는게 일반적인 방식
+
+**(-> extends 관계 / ---> 클래스와 인터페이스 관계)
+TreeSet -> HashSet ---> Set
+Vector(사용X), ArrayList(사용O), LinkedList ---> List
+
+Properties(사용O) -> Hashtable (사용X) ---> Map
+HashMap(사용O) ---> Map
+
+동시에 접근하게 될 경우 --> 접근 못하게 하는 방법.. 동기화 처리 (쓰레드)
+벡터는 모두 처리되어 있지만 .. 완벽.. 너무 무거워서 사용하기 힘듬
+
+Vector에서 
+1.2버전에서 ArrayList
+
+vector는 메소드마다 synchronized가 다 걸려 있음
+arrayList는 99% 동일한데.. 하나가 다른 것! 다른 하나는 동기화 처리가 안 되어 있다. --> synchronized를 다 없앰
+--> 필요한 기능 사용할 때 동기화 처리를 직접 해야한다.
+
+HashMap(arrayList)과 Hashtable(vector)도 같은 방식 -> Synchronized 차이
+
+Properties는 맵 방식 : key-value 방식으로 저장하는데 value는 object, properties는 key도 string, value도 string
+
+컬렉션API를 사용하는 이유는 특징적으로 담고, 특징적으로 ..
+
+Enumeration -> next로 뽑는.. 있을 때가지 도는 것이므로 while
+
+폴리몰피즘... 부모타입으로 자식을 생성하는 것
+
+넣은 순서대로 나오는게 순서가 있다는 것..List (중복 허용!)
+
+TreeSet(정렬) -> 강호동, 규현, 이수근, 피오
+순서와 정렬은 완전히 다른 개념
+
+List와 Set은 결국 Collection -> 방식이 비슷하다. add..remove / Map과는 다르다
+
+
+
+for문은 마지막 숫자를 알때
+모르면 while
+
+for -> list
+while -> set, map
+
+set은 map에 있는 것을 뽑을 때는 key들을 먼저 뽑고 
+looping 돌려서
+
+
+--
+Enumeration
+Iterator
+
+map에서 결국 set으로 가니깐 set까지
+set = map.keyset();
+Iterator it = set.iterator();
+
+hasNexts()로 있니? 없니?
+있으면 next()로 뽑아내기
+
+인덱스를 못쓰는 걸 Iterator를 쓰게 되어 있음
