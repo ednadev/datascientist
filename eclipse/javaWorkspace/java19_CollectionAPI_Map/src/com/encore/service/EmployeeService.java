@@ -1,6 +1,7 @@
 package com.encore.service;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,13 +27,18 @@ public class EmployeeService {
 	//추가
 	public void getEmployee() {
 		Set<Integer> set = map.keySet();
-		for(int i : set) {
-			System.out.println(map.get(i));
+/*		for(int key : set) {
+			System.out.println(map.get(key));
+		}*/
+		Iterator<Integer> it = set.iterator();
+		while(it.hasNext()) {
+			Integer key = it.next();
+			System.out.println(key + " : Person Info :: " + map.get(key));
 		}
 	}	
 	
 	public void addEmployee(Employee e) {	
-		boolean flag = false;
+/*		boolean flag = false;
 		Set<Integer> set = map.keySet();
 		for(int i : set) {
 			if(map.get(i).getName().equals(e.getName())) {
@@ -44,11 +50,18 @@ public class EmployeeService {
 		if(flag==false) {
 			map.put(e.getSsn(), e);
 			System.out.println("회원으로 등록되셨습니다.");
+		}*/
+		if(map.containsKey(e.getSsn())) {
+			System.out.println(e.getName() + " 님은 이미 회원이십니다");
+			return;
+		}else {
+			map.put(e.getSsn(), e);
+			System.out.println(e.getName() + " 님이 회원으로 가입되셨습니다.");
 		}
 	}	
 	
 	public void deleteEmployee(int ssn) {	
-		boolean flag = false;
+/*		boolean flag = false;
 		Set<Integer> set = map.keySet();
 		for(int i : set) {
 			if(i == ssn) {
@@ -60,10 +73,25 @@ public class EmployeeService {
 		}
 		if(flag == false) {
 			System.out.println("삭제할 대상이 존재하지 않습니다.");
+		}*/
+		Object emp = map.remove(ssn);
+		if(emp == null) { //삭제할 대상이 존재하지 않는다.
+			System.out.println("삭제할 대상이 존재하지 않습니다.");
+			return;
+		}else {
+			System.out.println("삭제되셨습니다.");
 		}
 	}	
 	public void updateEmployee(Employee e, int ssn) {
-		map.replace(ssn, e);
+		//map.replace(ssn, e);
+		if(map.containsKey(ssn)) {
+			map.put(ssn, e);
+			System.out.println(e.getName() + "님의 정보가 수정되었습니다.");
+		}else {
+			System.out.println("수정할 대상이 존재하지 않습니다.");
+			return;
+		}
+		
 	}	
 	
 	public Employee findEmployee(int ssn) {
@@ -73,10 +101,16 @@ public class EmployeeService {
 	public ArrayList<Employee> findEmployee(double sal) {
 		ArrayList<Employee> temp = new ArrayList<>();
 		Set<Integer> set = map.keySet();
-		for(int i : set) {
+/*		for(int i : set) {
 			if(map.get(i).getSalary() == sal) {
 				temp.add(map.get(i));
 			}
+		}*/
+		Iterator<Integer> it = set.iterator();
+		while(it.hasNext()) {
+			int key = it.next();
+			Employee e = map.get(key);
+			if(e.getSalary()==sal) temp.add(e);
 		}
 		return temp;
 	}	
