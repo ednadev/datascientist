@@ -1,0 +1,139 @@
+이번주 자바 끝
+다음주 SQL 시작 (월, 화, 수) --> 5월 데이터베이스
+
+오늘 Thread..
+
+
+Thread를 알기 전에 Process를 알아야 한다.
+
+** Process : 현재 실행중인 파일 -> 실행파일
+여러가지 일을 동시에 하는 것 = Multi-Tasking
+
+cpu..
+AppTest.class
+kakaoTalk
+FileDownload...
+
+하나의 파일이 실행한다는 건 CPU 점유한다는 얘기..
+동시에 실행하는 것처럼 보이지만 TimeSliced 방식
+시간을 쪼개서 CPU를 점유한다는 ..
+
+process는 하나의 독립적인 실행 파일
+여러개의 프로세스가 동시에 점유하는 것은 동시처럼 보이지만
+시간을 쪼개서 cpu를 점유한다는 뜻.. 이걸 Multi-Tasking이라고 한다.
+
+Thread : 실타래
+가느다란게 여러개 있다는 뜻.
+쓰레드는 전문화된 작업 단위.
+전문화된 - 특정일만 전담해서 하는 작업
+
+특수한 일꾼이라 생각
+
+여러개 돌아간다면..
+
+** Thread : "Process 내에서" 진행되는 세부적인 "작업단위"
+-- TimeSliced 방식으로 동작.. 특화된 메소드..라고 해도 상관없음 (특정한 전담을 맡은 메소드)
+
+
+*** Multi Tasking System
+	- Multi-Processing : 영화, 카톡, 이메일.. 동시에 진행
+	- Multi-Threading : 기생충.mvi 파일로 영화 보는 데 (자막처리, 음향, 영상처리 작업이 진행)
+
+쓰레드 설명.. CPU / CODE / DATA .. 끝?
+
+-- 프로세스들은 완전히 다른 코드다 .. 독립적인 작업 / 코드가 독립적이다.
+-- 쓰레드도 코드는 다르다.. 다만 프로세스 안에서 돌아가므로. 자막처리하고 영상처리 쓰레드가 같은 필드를 사용할 수 있다. process내에서 진행되므로
+   process 자원(resource)을 서로 sharing(공유)할 가능성이 있다.
+   공유할 때 잘 해야한다 -> 이걸 '동기화 처리'로 해결!
+
+   ArrayList를 쓰레드 할 때는 동기화 처리를 해야한다.. 안정적인 건 무겁다 ('예전 설명 참고')
+	동기화 처리를 해결하는데 발생하는 게 DeadLock
+
+[API]
+java.lang.Thread
+A thread is a thread of execution in a program. The Java virtusl Machine allows an ..
+
+쓰레드는 철저하게 우선순위(1~10)로 이루어져 있다. 10이 가장 높다. 1짜리 쓰레드가 있다 --> Heap영역의 가비지 컬렉터
+
+run 메소드는 쓰레드가 하는 일을 여기에다 정리
+쓰레드가 어떤 작업을 하는지, 로직 구분을 여기에다 
+
+The following code would then create a thread and start it running:
+런메소드.. 태스트 클래스에서 쓰레드를 쓰려면 객체생성
+
+PrimeRun p = new..
+Thread(p).start(); start로 호출
+ 쓰레드에 런 메소드를 만들어서 이 곳에 자막 처리하는 로직을 짜야 한다.
+
+ class A extends Thread {
+	run(){
+
+	}
+ }
+
+ 만들기는 run메소드, 호출할 때는 .start()..?
+ - 개발자는 start()로 호출 (스케줄러가..)
+
+ State Diagram of the Thread : 쓰레드의 탄생부터 죽을때까지의 라이프사이클을 한 눈에 볼 수 있다.
+ 직접 만들어본 다이어그램은 클래스 다이어그램 (헤징이냐, 상속이냐)
+ state : 객체의 상태
+ Thread State Diagram이 가장 유명하다.
+
+ new Thread + 
+
+ class PrimeThread extends Thread {
+	.public void run(){
+	}
+	.
+	.
+ }
+
+.start로 호출하면 런이 실행되는 것이 아니라 실행 가능 상태로 만들어준다.
+Runnable
+ -> 앞으로 실행할 수 있다는 의미
+
+ 큐 스택 매커니즘은 대기행렬로 
+ Runnable : t1, t0, t, t2... 앞서 쓰레드를 작동할 수 있다.
+
+ cpu가 검증 한다는 얘기는 런이 실행된다
+t2가 실행권을 얻게 된다 = Running
+무조건  cpu를 정리해야 한다.
+t2.가 내부적으로 run 메소드 호출을 받았다는 것
+	- 누가 호출해줬는지 (who)?
+	- 왜 t2에게 선택권을 줬는지 (why)? 우선순위 때문에
+
+start를 실행하면 - 실행 가능성태로 줄 선다.
+ts.run(); <-- JVM Scheduler 호출
+여러 쓰레드를 보고 우선순위가 제일 높은 쓰레드를 호출
+
+실행된 Running 상태 : 자동적으로 Death(종료)가 된다. 
+stop..
+
+처음 나온 스케줄링.. oop에서 벗어남
+
+정리
+개발자는 스타트만 호출할 수 있다. 
+런메소드를 받은 cpu가 내부적으로 처리한다는 것
+
+Running 하자마자 Block (Block은 cpu에서 내린다는 말) -- sleep
+
+sleep(1000) - 1초 동안 sleep (t2가)
+그만큼 타임캡슐 안에 들어가 있다.
+1초가 지나면 Runnable.. 바로 실행되는 것이 아니라 줄스러 간다.
+
+sleep -- API 확인하니
+InterruptedException.. 예외처리 해야함
+
+block 되어 있을 때 그다음 우선순위가 온다.
+
+쓰레드의 상태를 제어하는 것 중에 ..
+
+Running --> Runnable : yeild()
+
+
+
+
+
+
+
+
