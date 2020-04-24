@@ -1,0 +1,224 @@
+텍스트.. 스트림..? 객체로 보냄!
+
+Stream . I/O
+Socket
+
+왜 마지막 챕터가 Socket인가?
+
+지금까지가 Stand Alone 기술
+Socket 들어가면서부터 Remote
+로컬 머신이 2개! 
+
+Client : 데이터를 보내는 입장과
+Server : 데이터를 받는 입장 - 처리한 결과를 보내고
+Client : 처리한 결과를 받는다.
+-- 데이터는 stream이라는 관을 통해 날아간다.
+
+랜선의 끝단이 socket
+주소 입력 : ip adress를 입력
+외부 Stream을 만듬
+
+문자 기반 스트림을 보내는게 편하지만
+이것저것 보내려면 객체 기반 스트림으로!
+
+데이터는 양끝단 랜선의 끝에 socket을 통해 날아간다.
+날아온 데이터를 DB에 저장
+
+Client - [Server - DB]
+둘다 튜티어.. 마지막이 쓰리티어!
+오늘은 Client - Server까지만
+다음주는 튜티어..? Server - DB (JDBC)
+
+떨어져 있으면 연결! (remote 환경이면 연결!) = 통신
+통신은 여러가지~~ ftp, http,.. 
+여기서는 Socket 통신
+
+Client - Server : Socket 통신
+Server - DB : JDBC 통신 (jdbc : mysql)
+연결하는 규약! 프로토콜이라고 한다. 반드시 포트가 따라나와야 한다.
+
+socket에서는 가상의 포트(예를 들면 60000)를 쓸거고
+jdbc:mysql은 3306 포트를 쓸 것!
+
+
+stream : 흐름, 시냇물..(물은 위에서 아래로) Data의 흐름 (왜 그런 이름을 썼는지 중요) - 클라이언트에서 서버로~
+데이타 Generater(근원지) : Source
+데이타 종착점 : Sink
+Source - Sink : 연결한 것을 Stream
+Source - 입력스트림(c->, b->, a->) - 출력스트림(c->, b-> a->) - Sink
+
+그동안은 키보드가 source, 콘솔이 sink
+파일이 source, 콘솔이 sink
+다른 파일로 내보내게 된다면 파일이 source, 콘솔이 sink
+메모리가 source, 콘솔이 sink
+스트림은 이미 아키텍처 측면에서 만들어져있다.
+스트림을 쓴다는 건 자원을 열어서 쓴다는 뜻 (사용한다)
+
+스트림은 내부적으로 만들어진 것과 local machine 외부에 연결되어져 있는 것 (네트워크 망 등을 이용)
+빨간 스트림은 데이터를 계속 읽어들이기만 하고
+파란 스트림은 데이터를 계속 가져오기만 한다 (출력하기만 하는)
+하나의 스트림에서는 읽고 쓰고를 동시에 못한다.
+
+<Stream의 기본구조>
+1. FIFO (큐 구조와 같다 / 정 반대 구조가 Stack.. 먼저 들어간게 가장 마지막에 나온다)
+2. 단방향
+
+
+[JAVA API]
+스트림이 너무 많다.. 부모를 먼저 파악하는 게 굉장히 중요!
+사용하는 것만 사용! 
+
+자바 chapter 15개 중 stream이 제일 쉬움..
+
+
+Stream
+입력
+InputStream (Byte계열 스트림)
+  - 8bit 데이타 기반.. 영어는 깨지지 않음 한국어 깨짐..
+Reader (Character계열 스트림 (문자 기반 데이타))
+  - 16bit 데이타가 통과하는.. 한글, 일본어, 중국어 등 안깨짐. 내가 보내는 데이타가 문자 기반이면 character 계열 스트림 사용
+출력 : OutputStream (Byte계열 스트림) / Writer (Character계열 스트림)
+
+문자는 무조건 Character 계열 스트림
+이미지, 동영상 등은 Byte 계열 스트림으로 보낸다.
+
+객체를 보내는 건 Object 스트림.. 이건 따로!
+
+read(), write() 같지만 바이너리 기반인지, 캐릭터 단위 기반인지에 따라 다름
+
+
+키보드로 읽어들인 데이타를 콘솔로 출력하는 기능
+- 스트림 2개
+- character 계열
+- 입력 : InputStreamReader / BufferedReader (관을 하나 더 생성)
+
+-- 스트림 작성하는 패턴
+1. 스트림 생성 (자원을 열어서 쓰는 것) : InputStreamReader, BufferedReader
+2. 데이타 읽어들인다 : InputStreamReader(read), BufferedReader(readLine)
+ -- BufferedReader를 매핑하는 이유! 겹쳐지는 공간을 Buffered라고 함 (감쳐진 공간)
+ -- 소스와 연결되어 있는 건 InputStreamReader
+ -- 한 줄로 쌓을 수 있다는 건 엔터키를..?
+ -- Buffered 공간으로 인해 BufferedReader에서 한 줄씩 읽을 수 있는 function이 생김
+ -- 대표적인 function이 ReadLine()
+ -- 하나씩에서 한 줄씩으로! 이러한 이유로 스트림은 매핑해서 쓴다!
+3. 콘솔로 출력한다 : System.out.println(); 시스템 아웃한 결과로 리턴 받아서 쓴 것! 그냥 쓰면 된다.
+
+파일을 불러온다고 해도 안에 내용이 텍스트면 character 계열 스트림으로 가져온다.
+
+source나 sink를 직접 물고 있는 스트림 : 기본스트림 (NODE 계열)
+BufferedReader 같은 스트림 : 보조스트림(Filter 계열) - 생성자에서 인자값이 스트림을 물고 있다
+
+PrintWriter : 생성자 확인하면 Node, Filter 둘 다 사용 가능
+
+주의! 출력 스트림 할 때 파일을 만든다. 경로인 폴더는 아니다.
+
+
+문자 데이터를 출력할 때는 
+스트림이 데이터를 읽어들여서 일정량만큼 저장소에 모아놓는다.
+한꺼번에 출력하는 성질을 가지고 있다.
+아직 덜 차다고 느낀거! 
+flush를 사용하면 파일 출력이 바로바로 되는 것을 확인할 수 있다.
+flush는 잘 쓰지 않음
+
+Preferences에서 
+Refresh using native hooks or polling 체크
+
+true--2가지 구분!
+append는 이어쓰기
+autoFlush는 덮어쓰기
+
+string일때는 널로 비교! 바이너리에서는 -1이 파일의 끝
+
+
+------------
+
+Object Stream
+
+--
+
+스트림을 통과하는 건 Object
+class Person {
+  int age;
+  String name;
+  생성자
+  setter()
+  getter()
+}
+
+객체(19살 홍길동)를 만들고..
+스트림을 통과한다고 할때.. 메소드는 통과 대상이 아님
+생성자도 마찬가지..
+객체의 데이터가 통과한다는 건 필드에 있는 값이 스트림을 통과한다는 것
+(홍길동 - 19) 직렬화! Serializable해서 출력
+object stream에서 직렬화는 ObjectOutputStream
+
+ObjectOutputStream == 직렬화
+ObjectInputStream == 역직렬화
+
+(19살 홍길동)
+
+
+직렬화는 데이터 언팩!
+
+===========================================================
+
+Socket
+Remote
+
+Server
+Client
+
+Remote 환경에서는 Server가 먼저 구동되어야 Client가 갈 수 있다.
+Server는 여러명의 Client의 접속을 맞다들일 수 있어야 한다.
+Client는 여러개.. Client Side
+Serer는 1개
+
+[api - java.net.ServerSocket : A server socket waits for requests to come in over the network. ... 기다릴 때 accpept()]
+
+Server측 logic
+1. 서버소켓 생성
+ServerSocket server = new ServerSocket(port); //분산되어있을때 연결하는 방식이 프로토콜.. port도 지정되어 있어야 함
+//소켓통신에서 포트는 1~65535 중에 1~1024는 예약되어 있음.. 이 외에서 사용하기 .. 4000번때부터.. 가상의 포트 정하기 (60000)
+
+2. client의 접속을 맞이함
+Socket s = server.accept(); // 클라이언트 소켓.. 모든 소켓은 서버 소켓이 받아들인다.. reception desk..
+
+
+[api - java.net.Socket : This class implements "client sockets".. (also called just "sockets". A socket is an endpoint(랜선) for communication between two machines.] - 클라이언트에 있는 소켓을 지칭
+소켓으로부터 스트림이 만들어진다.
+Client측 logic
+1. Socket 생성
+Socket s = new Socket("server ip", 60000) // 소켓을 생성하는 순간 (서버 주소가 들어가므로) 서버에 접속한다! 매핑되도록 포트를 똑같이 가져야한다.
+/
+
+--지금 해야 할 일
+process의 필드와 thread의 필드를 나누고
+process 적인 기능만 뽑아낸다.
+thread는 run 밖에 없음
+
+여러개의 Client 프로세스가 Server에 간다.
+1. Server에 ServerSocket(ReceptionDesk)을 먼저 만든다. -- 모두 걸쳐가야 하는 곳
+2. ServerSocket에서 accept()로 Client를 맞이한다. 
+3. Socket이 만들어지고 Socket으로부터 Stream을 만든다. --> thread가 해야함
+4. Socket이 리턴되자마자 생성해야 하는 것.. thread가 가져가야 함
+5. thread가 스트림을 가지면서 thread가 메세지 주거니 받거니를 해야 함
+6. 쓰레드 객체가 점점 늘어나는데.. ArrayList로 관리.. 생성할 때는 add, 빠져나갈 때는 나갔다고 remove
+
+쓰레드는 ChattThread
+
+--필드 설정
+ChattServer
+ServerSocket server;
+Socket s;
+ArrayList<Thread> cThread;
+
+ChattThread
+BufferedReader br;
+PrintWriter pw;
+
+
+클라이언트도 쓰레드가 필요하다! 메세지를 작성하는데 동시에 다른데서 쓴 메세지를 받을 수 있다.
+내가 데이터를 보내는 동안 받는 쓰레드를 만들어야 한다.
+
+내가 쓰는 건 그대로
+서버가 던지는 데이터만 전담하는 쓰레드를 만들면 된다.
