@@ -1,0 +1,117 @@
+MySQL 8.0 - 작년 2019년 이후부터 나온 레퍼런스 참고
+
+https://dog-developers.tistory.com/20
+설치 시 : 비밀번호는 1234
+
+MySQL 8.0 Command Line Client
+show databases;
+select version();
+
+C:\Program Files\MySQL
+C:\Program Files\MySQL\MySQL Server 8.0
+C:\Program Files (x86)\MySQL
+C:\Program Files (x86)\MySQL\Connector J 8.0
+
+[Client : Data -->]
+[DB Server -> MySQL]
+Client는 DB Server의 데이터를 만질 수 있고, 수정할 수 있다. 
+DML : Data Manupulating Language
+
+Client에서 DB Server로 Data를 보냄 
+-- DML : INSERT, DELETE, UPDATE
+
+DB Server에서 Client에 가져옴
+-- SELECT
+
+Client 사이드
+- Dos 창 : Command Line (콘솔 기반)
+- GUI 창 : Workbench - Local instance MySQL80
+
+
+SQL + JDBC
+데이터 입력을 워크벤치나 커맨드라인이 아닌 프로그래밍에서..
+그때 연결되는 것을 JDBC
+Java <-> DB : Connector가 필요 x86에 있는 Connect J가 필요
+
+--
+
+DBServer
+- 구조
+1. 여러개의 Database들이 존재
+-> show databases; (데이터베이스를 '스키마'라고 함)
+2. 특정한 데이터베이스를 선택(지정)
+-> use mysql;
+--> Database changed : mysql 데이터베이스에 들어옴
+3. 특정한 스키마 안은 여러개의 table로 구성
+-> show tables;
+4. 테이블 구조
+-> desc user;
+row, 행, 레코드, tuple : ->
+column, 열 : ↓
+모든 행이 고유할 수 밖에 없는 값을 지정 : 기본값(PK : Primary Key)
+RDBMS : 테이블끼리 연관되어 있다
+  - 다른 테이블의 기본값(Student의 P.K)이 또다른 테이블의 컬럼값(Encore의 학생번호 : 외래키)으로 들어오면서 두 테이블이 서로 연결된다. (association)
+  - 외래키 .. 포레키..? (Foreign Key)
+
+
+drop database 스키마명; 데이터베이스 삭제할 때
+create database scott; 데이터베이스 생성 -> Query OK
+use scott; -> Database changed
+source C:\kmg\util\Sql_JdbcUtil\scott.sql <- ;하면 오류나니 주의!
+
+
+primary key 조건 : not null + unique
+
+Ctrl + Shift + Enter : 전체 줄 실행
+Ctrl + Enter : 한 줄 실행
+
+-- emp 테이블 column
+EMPNO (PK) : 사워번호
+ENAME : 사원이름
+JOB : 직업 (CLERK - 점원, SALESMAN - 영업사원, MANAGER - 관리자, ANALYST - 분석가, PRESIDENT - 사장) 
+MGR : 상사의 사원번호 
+  --> Null은 값이 없는 거다? JDBC에서 Null은 값이 있다. 
+  --> Null은 0과 같은 값이다? X.. Null이 0이 아니다.
+  --> Null은 자격없음, 미정(미확정) 둘 중 하나의 의미를 가지고 있다.
+  --> PRESIDENT는 자격없음, 미정은 신입사원일 때 정함. 확정이 나지 않았으니..
+HIREDATE : 입사년도
+SAL : 월 급여
+COMM : 커미션 -> 보너스 (SALESMAN만 커미션을 가짐, 다른 부서는 자격이 없음! 그래서 Null)
+  --> Null이 아닌 0인 경우는 보너스가 0이라는 것 (Null인 것과 비교)
+DEPTNO (FK) : dept와 연결 ..RDBMS
+
+DBMS에서는 헤징 관계는 없지만 부모 - 자식 테이블 관계만 있다.
+의존하는게 자식(갖다 쓰는 테이블)! emp가 자식 테이블, dept가 부모 테이블
+foreign key를 가진 테이블이 결국 자식 테이블이다.
+
+
+테이블 만들때 제약조건!
+PK : Primary Key
+NN : Not Null
+UQ : Unique
+AI : AutoIn..?
+
+
+----------------
+
+DBMS 종류
+- MySQL, Oracle, MSSQL ... -> SQL 문법 공유
+- NoSQL - 몽고디비(빅데이타 흐름)
+
+
+Alias를 띄어쓰기 사용하려면 ""로 묶는다
+정렬할 때 alias를 사용하는데, ""는 사용이 되지 않는다
+
+
+실행 순서
+FROM -> WHERE -> SELECT -> ORDER BY
+-- 문법순서랑 실행순서는 다르다.
+
+
+null은 사칙연산 X,
+==, !=.. 등 비교 연산도 할 수 없다.
+
+조건 WHERE에서 
+is not null
+is null
+사용!
