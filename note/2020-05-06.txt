@@ -1,0 +1,129 @@
+오늘부터 SQL + JDBC 병행
+
+-- 프론트엔드 UI 기술 + 서버 사이드..
+컨테이너가 어떻게 구동하는지.. 웹 끝내고
+
+-- 빅데이터 + 인공지능
+
+
+<Java Application> Client : Command Line, GUI Tool(워크벤치) <--(SELECT)-- (SQL) --(DML)--> DB Server : MySQL [Manupulating]
+  -> insert(){, remove(){, update(){, custAll(){ 
+      JDBC Program
+
+.. 인터페이스 같이 보기
+개발자 <- 사용 [JDBC] 구현 -> MySQL, Oracle..
+
+Driver가 JavaApplication에서 서버의 정보를 담고 있는 구현체..
+서버를 다운받으면 ..
+
+Driver : C:\Program Files (x86)\MySQL\Connector J 8.0\mysql-connector-java-8.0.19.jar
+
+
+
+C:\Program Files (x86)\MySQL\Connector J 8.0\mysql-connector-java-8.0.19\com\mysql\cj\jdbc\Driver.class
+--> Driver로 넣으면 현재 위치에서 찾으므로 풀네임으로 써줘야 한다. //FQCN
+
+
+
+C:\Program Files\Java\jdk1.8.0_201\jre\lib\ext로 mysql-connector-java-8.0.19.jar 복사해서 붙여넣기
+C:\Program Files\Java\jre1.8.0_201\lib\ext 여기도 mysql-connector-java-8.0.19.jar 복사해서 붙여넣기
+
+소켓 규칙이 아닌 다른 통신으로 연결해야 한다는 것.. 
+통신은 여러가지 프로토콜이 제공된다.
+가장 원시적인 프로토콜이 소켓! (프로그램 끼리 연결한 것)
+
+지금 쓸 프로토콜은 JDBC
+
+mysql은 jdbc:mysql..?
+
+
+[API]
+java.sql
+-- Classes : DriverManager
+DataSource interface
+The DriverManager methods getConnection and getDrivers ..
+
+
+
+[API]
+java.sql
+Interface Connection
+A connection with a specific database.
+SQL statements are executed and results are returned within...
+
+Method Summary
+--> prepareStatement : 인자값 String sql
+
+[API]
+java.sql
+Interface PreparedStatement
+An object that represents a precompiled SQL statement.
+컴파일은 미리 되지만, 쿼리문이 실행되는 것은 아님
+
+쿼리문 실행시키는 메소드 : executeUpdate()
+Executes the SQL statement in this PreparedSatement object...
+DML(INSERT, UPDATE, DELETE)에 해당하는 쿼리문만 실행
+
+SELECT는 executeQuery()..
+둘다 쿼리문을 실행시켜주는 메소드.. 어떤 차이점?
+하나는 select, 하나는 dml .. 리턴 타입이 다르다.
+
+int.. dml은 실행했을 시 성공하면 1, 실패하면 0
+
+ResultSet - 테이블 형식
+윗부분과 아랫부분이 추가되는데
+윗부분은 BOE (Before...)
+아랫부분은 EOE (End...)
+
+몇개 있을지 모르고 있을 때까지 돌리는 반복문 while문을 쓴다.
+
+쿼리문을 잘못 작성해도 컴파일에 문법적으로 안 잡힌다.
+
+디비 건드리는 로직을 비즈니스 로직이라고 한다.
+이런 로직에서 실제 값이 하드코딩 되는 것은 현업에 없다.
+
+프로그램에 실제 값이 하드코딩 되어지는 것은 세상에 없다.
+--> 다른 곳에 분리 : 외부로 값을 뽑아내는 것을 '모듈화'라고 한다.
+외부 자원으로 모듈화 시켜야 한다.
+
+메타데이터 : 특정한 값으로 뽑아낸 값..
+Meta Data화 --> 지금으로써는 interface 또는 properties로 뽑아낼 수 있다.
+
+
+DB에 대한 메타데이터만 담은 걸 ServerInfo.java
+
+자바에서 쥐고 안 놓는 것은 properties 파일이다.
+properties는 map의 자식이어서 key와 값을 연결해서 저장하는데
+값이 String이다. (Object가 아니라는 것)
+메타데이터로 쓰라는 것! -- 메타데이터는 특정한 상수값이니까
+
+jdbc.sql.selectAll --> 테이블별 구분이 안됨..어차피 현재는 테이블이 1개
+
+..
+
+ 
+주요기능들을 일단 서술한다.
+자판기 : 동전 -> 버튼 -> 콜라.. 
+여기서 예외 기능들을 추가한다.
+
+요구사항.. 분석 -> 요구사항 정의서 SRS
+
+사용자 입장에서 정밀하게 분석하려면.. 내가 일단 잘 아는 분야를 하는 것이 좋음
+서비스 기능을 얘기하면서 VO를 도출 어떤 Entity가 필요한지가 나옴
+요구사항 정의서가 나오면 VO 뿐만 아니라 DB설계도 가능, 프론트 UI도 설계할 수 있음..
+Service 메소드도 도출 가능
+
+
+
+----------------------
+
+내가 짠 메소드는 클라이언트 기능 하나하나가 다 연결되어 있음
+클래스 하나가 서비스 하나랑 연결되는 것이 아닌 메소드 하나하나가 연결되어 있다
+
+메소드 하나가 클라이언트 기능 하나랑 연결.. 커넥트를 메소드 마다 연결해야 함
+
+회원가입, 회원탈퇴.. 각각이 메소드별로 나눈것처럼 기능도 나눠짐.. 그러므로 커넥트를 일일히 다 해야 함
+
+메소드 하나가 완벽한 서비스라고 생각하면 된다.
+--> java.sql Connection : A connection (session) with a specific database.
+
