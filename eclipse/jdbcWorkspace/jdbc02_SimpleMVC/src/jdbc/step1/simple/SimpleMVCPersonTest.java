@@ -14,13 +14,38 @@ import config.ServerInfo;
  * 3. PreparedStatement 생성
  * 4. 쿼리문 실행
  * 5. close
+ * ::
+ * 메소드 마다 동일한 부분이 반복되는 것은 비효율 적이다
+ * 반복
+ * 1) 고정적인 반복 --- 디비연결, 자원 반납 -- 공통적인 메소드로 정의...메소드 마다 호출해서 사용
+ * 2) 변동적인 반복
  */
 public class SimpleMVCPersonTest {
-
-	public void addPerson(int ssn, String name, String address) throws SQLException{
+    // 공통적인 부분을 정의
+	public Connection getConnect() throws SQLException {
 		Connection conn = DriverManager.getConnection(ServerInfo.URL, ServerInfo.USER, ServerInfo.PASS);
+		System.out.println("Database Connection.....");
+		return conn;
+	}
+	
+	public void closeAll(PreparedStatement ps, Connection conn) throws SQLException{
+		if(ps!=null) ps.close();
+		if(conn!=null) conn.close();
+	}
+	
+	public void closeAll(ResultSet rs, PreparedStatement ps, Connection conn) throws SQLException{
+		if(rs!=null) rs.close();
+		closeAll(ps, conn);
+	}
+	
+	//비지니스 로직....DAO (Database Access Object)
+	public void addPerson(int ssn, String name, String address) throws SQLException{
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		conn = getConnect();
 		String query = "INSERT INTO person(ssn, name, address) VALUES(?, ?, ?)";
-		PreparedStatement ps = conn.prepareStatement(query);
+		ps = conn.prepareStatement(query);
 	
 		ps.setInt(1, ssn);
 		ps.setString(2, name);
@@ -29,25 +54,28 @@ public class SimpleMVCPersonTest {
 		ps.executeUpdate();
 		System.out.println(name + " 님, 회원가입 되셨습니다...");
 		
-		ps.close();
-		conn.close();
+		closeAll(ps, conn);
 	}
 	public void removePerson(int ssn) throws SQLException {
-		Connection conn = DriverManager.getConnection(ServerInfo.URL, ServerInfo.USER, ServerInfo.PASS);
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		conn = getConnect();
+		
 		String query = "DELETE FROM person WHERE ssn=?";
-		PreparedStatement ps = conn.prepareStatement(query);
-		
+		ps = conn.prepareStatement(query);
 		ps.setInt(1, ssn);
-		ps.executeUpdate();
-		System.out.println("회원 탈퇴 하셨습니다...");
+		System.out.println(ps.executeUpdate());
 		
-		ps.close();
-		conn.close();
+		closeAll(ps, conn);
 	}
 	public void updatePerson(int ssn, String name, String address) throws SQLException {
-		Connection conn = DriverManager.getConnection(ServerInfo.URL, ServerInfo.USER, ServerInfo.PASS);
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		conn = getConnect();
 		String query = "UPDATE person SET name=?, address=? WHERE ssn=?";
-		PreparedStatement ps = conn.prepareStatement(query);
+		ps = conn.prepareStatement(query);
 		
 		ps.setString(1, name);
 		ps.setString(2, address);
@@ -56,41 +84,44 @@ public class SimpleMVCPersonTest {
 		ps.executeUpdate();
 		System.out.println(name + " 님, 회원 수정 하셨습니다...");
 		
-		ps.close();
-		conn.close();
+		closeAll(ps, conn);
 	}
 	public void searchAllPerson() throws SQLException {
-		Connection conn = DriverManager.getConnection(ServerInfo.URL, ServerInfo.USER, ServerInfo.PASS);
-		String query = "SELECT name, address FROM person";
-		PreparedStatement ps = conn.prepareStatement(query);
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
-		ResultSet rs = ps.executeQuery();
+		conn = getConnect();
+		
+		String query = "SELECT * FROM person";
+		
+		ps = conn.prepareStatement(query);
+		
+		rs = ps.executeQuery();
 		while(rs.next()) {
-			String name = rs.getString("name");
-			String address = rs.getString("address");
-			System.out.println(name + ", " + address);
+			System.out.println(rs.getInt("ssn") + ", " + rs.getString("name") + ", " + rs.getString("address"));
 		}
 		
-		rs.close();
-		ps.close();
-		conn.close();
+		closeAll(rs, ps, conn);
 	}
 	public void searchAPerson(int ssn) throws SQLException {
-		Connection conn = DriverManager.getConnection(ServerInfo.URL, ServerInfo.USER, ServerInfo.PASS);
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		conn = getConnect();
 		String query = "SELECT name, address FROM person WHERE ssn=?";
-		PreparedStatement ps = conn.prepareStatement(query);
+		ps = conn.prepareStatement(query);
 		
 		ps.setInt(1, ssn);
-		ResultSet rs = ps.executeQuery();
+		rs = ps.executeQuery();
 		while(rs.next()) {
 			String name = rs.getString("name");
 			String address = rs.getString("address");
 			System.out.println(name + ", " + address);
 		}
 		
-		rs.close();
-		ps.close();
-		conn.close();
+		closeAll(rs, ps, conn);
 	}
 	public static void main(String[] args) {
 		SimpleMVCPersonTest mvc = new SimpleMVCPersonTest();
@@ -102,23 +133,23 @@ public class SimpleMVCPersonTest {
 		/*try {
 			mvc.removePerson(444);
 		} catch (SQLException e) {
-			System.out.println("회원 탈퇴 실패...");
+			System.out.println("회원 삭제 실패...");
 		}*/
 		/*try {
 			mvc.updatePerson(333, "강호동", "제주도");
 		} catch (SQLException e) {
 			System.out.println("회원 수정 실패...");
 		}*/
-		/*try {
+		try {
 			mvc.searchAllPerson();
 		} catch (SQLException e) {
 			System.out.println("회원 전체 조회 실패...");
-		}*/
-		try {
+		}
+		/*try {
 			mvc.searchAPerson(111);
 		} catch (SQLException e) {
 			System.out.println("회원 조회 실패...");
-		}
+		}*/
 
 	}
 
