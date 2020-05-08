@@ -1,0 +1,95 @@
+JOIN..
+foreign key를 가진 테이블이 자식
+
+조인이란?
+두개 이상의 테이블로부터 데이터를 질의하기 위해서 조인을 사용한다.
+
+self join - 하나 이상의 테이블...
+
+테이블들끼리 연관되어 있으면 -- 
+
+emp [0...m]  -> ---- dept [1 / 0]
+---> multi ...?
+
+양쪽 테이블을 연결하는 컬럼의 존재
+
+----------------------------------
+
+비지니스 로직 2개 호출.. 클라이언트가 2명
+커넥션이 2개 열려야 함
+DB에 있는 CRUD를 할 때는 반드시 존재유무를 확인해야한다.
+
+프로그램 작업 시
+사용자 입장에서 먼저 생각하기
+
+
+entity 추출 = 테이블 생성
+
+논리적인 설계에서 다대다는 불가능한 설계이다.
+다대다 관계를 해소시켜야 한다.  --> 다대다 화살표를 눌러서 두 테이블을 차례대로 연결하면 테이블 생성
+
+association 관계를 하나 더 만든다..?
+다대다 관계를 해소하기 위해서는 entity를 하나 더 두고
+각각을 1대다로 연결
+
+
+
+use scott;
+source C:\kmg\util\broker.sql
+
+
+
+---------------------------------------
+
+
+작업순서
+1. 사용자적 입장에서 기능을 분석 --> Usecase Diagram
+   DB Modeling
+2. 엔터티 추출, 기본키 지정 ---> 개념설계단계
+3. 일반속성 지정, 엔터티간의 관계를 설정
+   이때 다대다 관계는 Association Entity로 해소시켜줘야 한다
+   --> 논리설계  --> 물리적 설계(테이블의 실질적인 구성)
+
+   UI 설계
+4. VO클래스 작성
+5. Business Logic Template 작성
+
+
+다대다 관계는 부모 자식 관계가 없으니 그냥 아무거나 먼저 찍어도 상관 없음
+워크벤치는 다대다를 선택하면 1대다로 알아서 해소시킴
+
+--
+Shares는 양쪽의 foreignkey와 함께 자신만의 quantity..
+모든 정보를 조합해서 shares가 나온다.
+
+PK가 있으면 PK만으로 정보를 뽑을 수 있는데
+PK를 주지 않으면 양쪽 정보를 다 확인해야 하므로 PK를 넣는 것이 좋다
+
+새로 생긴 공유하는 테이블은 PK를 해제하고 NN만 체크해서 Foreign key로 사용
+해외에서는 볼 수 있는...VO에 Rec 붙이는 것..
+
+
+twotier : Client Server[java] - DB Server[db]
+--> 분산은 한 군데에서 일어난다.
+--> 분산이 있다는 것은 연결.. 전문용어로 통신.. 규약..protocol : jdbc:mysql
+
+
+treetier
+Client tier
+Middle Server, Middle tier, Server tier
+DB Server,, resource tier
+--> 분산이 두 군에서 일어난다.
+--> jdbc, 그리고 socket (object stream으로 보냄)
+--> GUI (socket), WEB (http)
+
+
+
+예외 (인터페이스 -> dao.. dao에서 세부적인 코드작성 전에 예외부터 정리)
+broker.twotier.exception
+DuplicateSSNException
+RecordNotFoundException
+InvalidTransactionException
+
+
+
+공통적인 작업은 위로 뽑는다.. 존재유무 확인 메소드 추가

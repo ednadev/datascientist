@@ -113,8 +113,8 @@ public class CustomerDAOImpl implements CustomerDAO{
 		ps.setString(1, id);
 		
 		rs = ps.executeQuery();
-		while(rs.next()) {
-			c = new Customer(rs.getString("id"), rs.getString("pass"), rs.getString("cust_name"), rs.getString("address"));
+		if(rs.next()) {
+			c = new Customer(id, rs.getString("pass"), rs.getString("cust_name"), rs.getString("address"));
 		}
 		
 		closeAll(rs, ps, conn);
@@ -157,11 +157,11 @@ public class CustomerDAOImpl implements CustomerDAO{
 		ps.setString(2, vo.getPass());
 		
 		rs = ps.executeQuery();
-		while(rs.next()) {
+		if(rs.next()) {
 			c = new Customer(rs.getString("id"), rs.getString("pass"), rs.getString("cust_name"), rs.getString("address"));
 		}
 		
-		closeAll(ps, conn);
+		closeAll(rs, ps, conn);
 		return c;
 	}
 
