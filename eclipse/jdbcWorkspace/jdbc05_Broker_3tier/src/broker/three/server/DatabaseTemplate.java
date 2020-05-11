@@ -1,4 +1,4 @@
-package broker.twotier.dao;
+package broker.three.server;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import broker.twotier.exception.DuplicateSSNException;
-import broker.twotier.exception.InvalidTransactionException;
-import broker.twotier.exception.RecordNotFoundException;
-import broker.twotier.vo.CustomerRec;
-import broker.twotier.vo.SharesRec;
-import broker.twotier.vo.StockRec;
+import broker.three.exception.DuplicateSSNException;
+import broker.three.exception.InvalidTransactionException;
+import broker.three.exception.RecordNotFoundException;
+import broker.three.vo.CustomerRec;
+import broker.three.vo.SharesRec;
+import broker.three.vo.StockRec;
 
 public interface DatabaseTemplate {
 	Connection getConnect() throws SQLException;

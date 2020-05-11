@@ -1,0 +1,63 @@
+https://ovenapp.io/
+
+ui 리스트 뿌릴 때는 리스트 기존 정보 제거하고 추가
+
+-------------------------------------
+
+[Client] Brocker(main) -- Rec(3), Exception(3) --> Database : add, delete... 
+DAO ------ Access ------ > [DB Tier]
+
+분리!
+[Client] - [Database : Middle Server] - [DB Tier : DB Server]
+
+3tier 설계를 어떻게 할 것인지
+client와 middle server가 어떻게 통신할 것인지
+
+
+
+
+[Broker] -- Rec, Exception -- [Database] -- [DB]
+
+-- ProtocolHandler [ JuryThread ] 클라이언트가 접속할 때마다.. 이때 Thread 사용
+어떤 메소드가 호출되었고
+어떤 인자값을 ...
+
+Command가 object -- 담아서 던질 객체
+
+싸서 던진다..
+박싱 - 언박싱
+
+
+Broker - Protocol - Command (중요!!) - ProtocolHandler - Database - DB : request, response (성공했니, 실패했니.. 상태코드값)
+
+
+
+------------------------
+
+ALTER TABLE shares ADD CONSTRAINT fk_shares_ssn
+
+foreign으로 연결되었을 때,, 
+자식을 가지고 있는 부모는 못 죽인다.
+foreign을 주지 않으면 일일히 다 삭제한다.
+foreign을 주면 다른 자식을 가지고 있는 부모는 못 죽인다.
+ -- 자식을 죽이고 부모를 죽여야 가능
+
+1. 자식을 먼저 죽이고.. 부모를 죽이는 방법
+2. on delete sel.. 자식의 값을 null값으로 바꾸고 부모를 죽이는 방법
+  -- sel
+
+
+
+ALTER TABLE shares ADD CONSTRAINT fk_shares_ssn foreign key(ssn) references customer(ssn) ON DELETE CASCADE;
+ALTER TABLE shares ADD CONSTRAINT fk_shares_symbol foreign key(symbol) references stock(symbol) ON DELETE CASCADE;
+-- ON DELETE CASCADE를 줘야 자식 죽이고 부모도 죽이는 방법
+
+-- ON DELETE SET null : 자식을 null로 바꾸고 부모를 죽이는 방법
+
+
+쓰레드는 두 가지.. 작업 쓰레드와 리스너 쓰레드가 있다. 메인 같은 데몬 쓰레드도 있다.. 데몬은 쓰레드로 취급 안함
+ProtocolHandler = 리스너 쓰레드 : 서버 소켓을 가지고 있어야 한다.
+   -- 소켓이 오면 Jury한테 넘겨줌.. 클라이언트 마다마다 // stream으로  -- database로 연결되고
+Protocol과 Jury가 연결
+클라이언트에서는 Protocol, 서버에서는 Jury가 ..
+
