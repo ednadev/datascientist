@@ -1,4 +1,7 @@
 package broker.three.vo;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Playdata
@@ -7,7 +10,7 @@ package broker.three.vo;
  * 주식의 이름, 주식의 가격으로 구성된다.
  *
  */
-public class StockRec {
+public class StockRec implements Serializable{
 	private String symbol;
 	private float price;
 	

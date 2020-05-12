@@ -1,0 +1,44 @@
+jdbc 3tier로 마무리.. 끝나고 분석함수
+
+MySQL 5.0 --> 8.0으로 바뀐게 최근
+통계, 수학적인 분석이 잘 되어 있다.
+
+Transaction
+
+
+
+-----------------------
+작성은 DB부터..
+<Client> : - Server -> DB -> Server -> Client (요청.. Start와 Ending이 같은 곳)
+Broker
+~Rec
+~Exception
+(통신) [Socket(을 가지고 있다)] Protocol : Database와 똑같은 애를 가져다 놓는다. (선언부만 같음.. 구현부는 새로 짜야 함)
+      - addCustomer, deleteCustomer, getPortfolio..
+
+(Client까지 구성 후 .. 통신) : Protocol - ProtocolHandler
+Protocol과 ProtocolHandler는 통신 연결
+데이터는 Protocol과 JuryThread이 연결(스트림 연결) --> Database와 연결 -> DB와 연결
+  ---> [Command]=도시락 .. 스트림 : 1. 어떤 메소드가 호출, 2. 이때 어떤 값들이 담기는지.. result,, 특히 resultset은 DB에서부터 값을 담아서 반드시 돌아와야 한다.
+          field가 딱 2개밖에 없다.. 70(메소드 선택)과 (배열 : 111-111, James, N.Y 인자값을 넣어서 감), 
+            그리고 1칸짜리 빈통 ArrayList를 넣어주고 올때는 담겨서 온다. 여러명을 가지고 오려면 ArrayList를 통으로 넣는다
+ex) getCustomer(ssn) : 60, ssn, -1을 넣어서 보낸다 --> 60, ssn, 0으로 객체를 통으로 가지고 온다
+
+<Server>
+III. VO 작성 : ~Rec 
+IV. 비즈니스 로직 : DatabaseTemp (템플릿)  ---> Database
+      + 예외 추출 : ~Exception
+==> ~Rec, Exception .. 둘다 Client에도 똑같이 있어야 함
+(통신) [ServerSocket(을 가지고 있어야 한다)] ProtocolHandler
+통신할시 Server는 1대지만, Client는 여러대
+==> JuryThread.. ++++
+
+
+<DB>
+II. DB Modeling
+1. 개념설계 : entity 추출 (확실한 속성까지는.. 기본키 설정)
+2. 논리설계 (가장 중요) : entity들이 완성.. 나머지 일반 속성들을 디테일하게 정리 -- I. 사용자적 입장 기능 : 1) 시나리오, 2) UseCase Diagram, 3) SRS (가지고 구현 - DB Modeling / 비즈니스 로직 / 프로토타입으로 UI 설계)
+3. 물리설계 : VO 작성 - 비즈니스 로직..으로 넘어감
+
+
+

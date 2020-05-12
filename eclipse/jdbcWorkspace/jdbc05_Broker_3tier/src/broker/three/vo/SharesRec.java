@@ -1,4 +1,7 @@
 package broker.three.vo;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Playdata
@@ -8,7 +11,7 @@ package broker.three.vo;
  * 얼마만큼 보유하고 있는지의 정보를 담고 있는 클래스...Shares 테이블의 정보
  * 
  */
-public class SharesRec {
+public class SharesRec implements Serializable{
 	private String ssn;
 	private String symbol;
 	private int quantity;

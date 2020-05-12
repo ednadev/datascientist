@@ -1,5 +1,6 @@
 package broker.three.vo;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Vector;
  * 
  * 주식을 보유하지 않는 고객일 수 있고 | 주식을 보유한 고객일 수 있다.
  */
-public class CustomerRec {
+public class CustomerRec implements Serializable{
 	private String ssn;
 	private String name; //컬럼명은 cust_name
 	private String address;

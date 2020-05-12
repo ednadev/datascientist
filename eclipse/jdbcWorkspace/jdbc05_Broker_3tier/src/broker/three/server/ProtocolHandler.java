@@ -1,6 +1,5 @@
 package broker.three.server;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -16,7 +15,7 @@ public class ProtocolHandler extends Thread{
 	Socket s;
 	JuryThread jury;
 	Database db;
-	static final int MIDDLE_PORT = 60000;
+	public static final int MIDDLE_PORT = 60000;
 	
 	public ProtocolHandler(String serverIp) {
 		
