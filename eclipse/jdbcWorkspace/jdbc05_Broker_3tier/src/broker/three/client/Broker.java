@@ -29,7 +29,7 @@ import broker.three.vo.SharesRec;
 import broker.three.vo.StockRec;
 
 //인터페이스 implements 한 상태로 클래스 선언하자
-public class Broker implements ActionListener,ItemListener{
+public class Broker implements ActionListener,ItemListener, Runnable{
 	private static int mode = 0;
 	private static final int ADD_MODE = 1;
 	private static final int UPDATE_MODE = 2;
@@ -131,6 +131,15 @@ public class Broker implements ActionListener,ItemListener{
 		portList.setBackground(new Color(142 ,142  ,255));
 		sellTf.setBackground(new Color(196 ,196  ,255));
 	
+		// Ticker Tape 붙이기 
+		TickerTape tt = new TickerTape("127.0.0.1", 700);
+		tt.setSize(700, 300);
+		new Thread(tt).start();
+		
+		frame.add(tt,"North");
+		
+		//
+		
 	    frame.add(pc,"Center");
 		frame.add(pe,"East");
 		// *******************  컴포넌트 부착  ************************************
@@ -576,7 +585,24 @@ public class Broker implements ActionListener,ItemListener{
 			}
 		}
 	public static void main(String args[])throws Exception {
-		Broker broker = new Broker();		
+		Broker broker = new Broker();
+		Thread t = new Thread(broker);
+		t.start();
+	}
+
+	@Override
+	public void run() {
+		//무한루핑 돌면서...10초 간격으로 디비의 비지니스 로직을 호출한다.....
+		while(true) {
+			try {
+				showStockList(db.getAllStocks(), stockList);
+				System.out.println("$$$$$$   실시간 주식정보....$$$$$$$$");
+				Thread.sleep(10000);
+			}catch(Exception e) {
+				
+			}
+		}
+		
 	}
 }
 

@@ -42,3 +42,54 @@ II. DB Modeling
 
 
 
+----------
+분석함수 - 파일 참고
+------------------------
+
+Transaction
+api..
+java.sql.Connection
+Note : When configuring a Connection, JDBC applications should use the appropriate Connection method such as setAutoCommit or setTransactionIsolation..
+
+INSERT하고 commit한 적이 없음..
+--
+Connection Method : setAutoCommit, setSavepoint, rollback
+
+
+..
+
+윤아(신한은행)
+100달러, 100달러, 100달러, 100달러, 100달러, ...
+
+승기(국민은행)
+100달러, 100달러, ...
+
+윤아 계좌에서는 200달러가 나감 (출금)
+ --> 승기 계좌에서는 200달러가 들어옴 (입금)
+계좌이체 : transfer / server가 확 꺼져버림.. 200달러는 나갔지만 들어오진 않음
+transaction : 묶어서 처리! 
+transaction 처리라는 뜻.. 직역한 단어를 알면 좋음
+
+Transaction : 출금과 입금을 하나의 처리 단위로 묶어버리면 
+setAutocommit(false) : 시작 --> 묶을 때까지...
+1. Automic (원자성)
+2. Consistence (데이터의 일관성)
+-----> commit.. setAutocommit(true)로 바꾼다.
+중간에 무슨일이 생겨서 
+하나의 처리단위가 되지 않으면 rollback으로 원래 상태로 유지된다 (출금 전으로 돌아감)
+원래 상태 말고도 savepoint를 지정해놓아서 해당 savepoint로 rollback 된다.
+savepoint는 rollback이 돌아가는 지점
+
+
+select @@autocomit; -- 1 (다른 db는 보통 0)
+--> autocomit 무조건 되도록 만들어 짐
+false가 0!
+
+set autocommit=0; Transaction 해제
+
+commit을 하지 않았다는 건 임시 저장
+완벽하게 테이블의 저장하려면 commit..!
+commit을 해야 모든 사람들이 바뀐 것을 확인할 수 있다.
+
+다른 곳에서 작업하려고 그러면 blocking..
+waiting은 commit되어야 풀림
