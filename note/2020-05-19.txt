@@ -1,0 +1,122 @@
+오늘부터 Front-End..
+J2EE까진 아니지만 Web Server는 깔아야 하는 정도
+WAS.. Web Application Server
+
+자바가 JVM에서 해석되서 실행되면
+HTML 같은 경우는 브라우저에서 해석되서 실행
+
+- Front..
+(구조) HTML5
+(스타일) CSS3
+(동적) JavaScript --> 라이브러리 : jQuery (or Samchatouch..) jQuery만 뜬 이유? 가독력이 뛰어나고, 직관적이어서
+
+--> Bootstrap
+==============> Vue.js (CLI 기반으로) : 원시버전이 Angular .. 구조가 너무 어려움 쉽게 만든 것이 React.. 더 쉽게 만든 게 Vue
+
+2. Front-End --- 3. Middle Server (Web) --- 1. Back-End
+Framework : Maven 기반으로 (이 부분은 데이터 분석 과정 이후로!)
+
+Client에서 요청 (서버상에 존재하는 페이지)
+Web Server부터 설치.. A.html 저장
+-- 통신! 여러가지 통신 방법이 있는데 Protocol (프로토콜) 
+브라우저에서 요청! 브라우저 없으면 X
+HTTP 통신으로 연결!
+
+http://ip:8080/A.html
+ip는 서버 ip
+
+File Not Found --> 404 에러
+OK. 코드는 200
+
+홈페이지, 웹사이트
+
+================================================
+
+Web Server부터 설치
+
+tomcat.apache.org
+apache가 깃털, tomcat이 호랑이? 무튼..
+apache web server
+
+버전은 어떻게 고를지..
+Download - Which version?
+Servlet Spec --> 3.1 스펙을 사용할 예정
+Tomcat 8.5 버전을 다운받을 것
+
+Download - Tomcat 8
+8.5.55  --> Core
+zip : 둘 다 있는 거 (32bit, 64bit)
+
+
+zip 풀어서 이니셜 밑으로 이곳이 apache-tomcat-8.5.55
+서버에 port 번호 변경 (config - server.xml)
+ <Connector port="8888" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" 
+               URIEncoding="utf-8"/>
+port 번호는 8888로, URIEncoding 추가
+
+
+-----------------
+
+frontWorkspace
+tomcat server - webapps에 배포!
+Web Applications
+index.html : 웹사이트, 홈페이지, 시작페이지
+
+web site : static document (화면만 보여주는 고정되어 있는 것) + Program (--> Dynamic Document) : Servlet, JSP
+ = Web Applications
+
+webapps --> context path[HTML5] 배포 (index.html)
+
+1. 코딩
+2. 배포
+3. 서버가동 (tomcat home - bin)
+4. 요청 (브라우저에서)
+http://127.0.0.1:8888/HTML5/index.html
+--> HTML5가 context_path
+
+코딩 - 배포 - 서버가동 ..  모두 이클립스에서
+이클립스 Server에서
+Apache - Tomcat v8.5 Server
+
+Tomcat installation directory : 탐캣 홈 지정 (C:\kmg\apache-tomcat-8.5.55)
+
+Add and Remove
+우리가 만든 프로젝트 단위를 서버에 올릴 때는 Configured
+서버에 올릴 때는 프로젝트 단위로 올림! context_path
+모든 소스코드는 서버(tomcat) 밑에 webapps --> context_path 별로 배포
+
+console에서
+"정보: Server startup in 4389 ms" 서버 시작
+
+인코딩 UTF-8
+-- General - Workspace
+-- Web - CSS Files, HTML Files, JSP Files
+
+
+File - New - Dynamic Web Project
+Target runtime : apache 8.5
+dynamic web module version 3.1인지 확인하고 Next
+Web Module에서 Context root : HTML5 (context_path)
+Content directory : WebContent인거 확인
+
+이클립스 구조..
+HTML5
+Java Resources에는 Java Programming
+WebContent 주목!
+ -- 정적인 파일은 WebContent 밑으로 들어간다.
+
+
+Server Locations에서
+Use workspace metadata로 설정되어 있음
+Server 가동 전에
+Server Locations에서 Use Tomcat installation (takes control of Tomcat installation)
+Deploy path : C:\kmg\apache-tomcat-8.5.55\webapps
+로 설정해놓아야 함
+
+
+
+Web Server에서는 정적(static)인 페이지까지 돌리고
+programming이 같이 돌아가려면 Container까지 들어감
+현재로써는 Web Server에서 끝!
