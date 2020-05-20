@@ -1,0 +1,18 @@
+/* 색깔은 오렌지, 글씨 스타일..알아서, 글씨는 조금 굵게, 글씨 크기는 25pt */
+h2 {
+    color: orange;
+    font-style: oblique;
+    font-weight: bold;
+    font-size: 25pt;
+}
+
+/* p 태그를 선택자로 지정...글씨색깔.font-size: 25pt; 궁서체(?) */
+p {
+    color: purple;
+    font-size: 25pt;
+    font-family: cursive;
+}
+
+body {
+    background: gray;
+}
