@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>복합연산자</title>
+<script type="text/javascript">
+    //사용해야 하는 이유.. DOM : Document Object Model
+    //Document - HTML - HEAD, BODY (...)
+    //DOM 구조로 메모리에 올라간다. Object로 올라간다.
+    //속성만 올라가지 않는다. 객체의 적용되는 것 뿐..
+    //HTML이 다 읽어지고 나야 Document가 나온다. 그러므로 innerHTML에서 에러가 난 것!
+    //window.onload는 전부 다 읽고 호출하는 것!
+    //window.onload의 문제점 - HTML 하나에 한 번 밖에 사용 못한다.
+
+    /*
+    window.onload
+    html 문서에 포함된 모든 콘텐츠가 로드된 후에 실행하는 함수
+    동일한 문서에는 오직 하나만 존재한다.
+
+    여러개 존재할수 있고 훨씬 동작이 유연한 함수....
+    jQuery의 ready 함수이다.
+    */
+    window.onload = function () { 
+    
+        var list = ''; //데이타 타입이 동적으로 할당
+        //복합 연산자 사용
+        list += '<ul>';
+        list += '<li>Hello</li>';
+        list += '<li>JavaScript!!!</li>';
+        list += '</ul>';
+
+        // li변수안의 있는 내용을 웹 브라우저에 출력...body태그아래에 붙이면 된다. (document 앞에 window 생략 : window.document)
+        document.body.innerHTML = list;
+
+    }
+</script>
+</head>
+<body>
+    <h2>====OnLoad====</h2>
+</body>
+</html>
