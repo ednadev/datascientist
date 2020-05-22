@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script>
+        var myName = "James";
+        firstName = "Gosling"; //자동으로 전역변수에 추가된다.
+        name = "James Gosling";
+        console.log(myName);
+        console.log(firstName);
+        console.log(name);
+
+        // es6....2015...let, const
+        function showAge() {
+            age = 90; //age는 전역변수
+            console.log(age);
+        }
+        showAge(); //90
+        console.log(age); //90
+    </script>
+</head>
+<body>
+
+</body>
+</html>
