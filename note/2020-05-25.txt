@@ -1,0 +1,26 @@
+jQuery(Javascript Library) .. Event
+Bootstrap
+
+Local Storage -> vue.js
+
+Ajax .. 비동기
+(Asynchronous JavaScript and XML)
+
+
+============================
+
+DOM : 문서 조작
+SAX : html 처음부터 끝까지 전부 읽는 것
+
+
+속성의 이름과 값은 트리구조 X.. 태그에 적용하는 것
+
+==================================
+
+jQuery.. event, Ajax
+https://api.jquery.com/ : jQuery API Documentation
+
+================================
+
+4시 이후 script 로직 더해서
+내일부터는 jQuery homework (끝까지 가져가게 됨)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(function() {
+			//입력폼을 선택자로 지정...
+			//javascript에서는 폼안에 입력된 값을...frm.value;
+			//jQuery에서는 폼안에 입력된 값을...frm.val('aaa');
+			$('input[name=userName]').val("James");
+			$('input[name=userAddr]').val("NY");
+		});
+	</script>
+</head>
+<body>
+	<form action="jq01_result.jsp" method="GET">
+		<input type="text" name="userName"><br>
+		<input type="text" name="userAddr"><br>
+		<input type="submit">
+	</form>
+</body>
+</html>
+
+<!-- http://127.0.0.1:8888/JQuery/function/jq01_result.jsp?userName=James&userAddr=NY -->
+                      <!-- : context path (root path) -->
