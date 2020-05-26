@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>이미지 숨기기 hide() | 이미지 보이기 show()</title>
+	<style>
+		
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(function() {
+			//1. 일단은 이미지 숨긴다.
+			$('#imageView').hide();
+
+			//2. 사진 보기 부분의 배경색은 노랑으로 지정...css
+			$('#mouseIn').css('background', 'yellow');
+
+			//3.
+			/*$('#mouseIn').mouseenter(function() {
+				//$('#imageView').show(3000);
+				$('#imageView').fadeIn(2000);
+			});*/
+
+			//4.
+			/*$('#mouseIn').mouseleave(function() {
+				//$('#imageView').hide(3000);
+				$('#imageView').fadeOut(2000);
+			});*/
+
+			//5. hover()
+			$('#mouseIn').hover(function(){
+				$('#imageView').fadeIn(2000);
+			}, function(){
+				$('#imageView').fadeOut(2000);
+			});
+		});
+	</script>
+</head>
+<body>
+	<h2 id="mouseIn">+++++++++++++++ 사진 보기 +++++++++++++++</h2>
+	<div>
+		<img id="imageView" src="../image/1.JPG" width="300" height="400">
+	</div>
+</body>
+</html>

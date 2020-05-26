@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>hover(), addClass(), removeClass()</title>
+	<style>
+		.larger {
+			width: 200px;
+			border: 2px solid red;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(function() {
+			//각각의 이미지에 마우스를 갖다대면 현재 크기보다 2배로 커지고
+			//이미지에서 마우스가 벗어나면 원래의 크기를 되찾도록....HOVER
+			$('img').hover(function(){
+				//mouseenter...
+				$(this).addClass('larger');
+			}, function() {
+				//mouseleave...
+				$(this).removeClass('larger');
+			});
+		});
+	</script>
+</head>
+<body>
+	<h2>Bigger Image...</h2>
+	<img src="../image/1.JPG" width="100"><br>
+	<img src="../image/2.JPG" width="100"><br>
+	<img src="../image/3.JPG" width="100"><br>
+</body>
+</html>

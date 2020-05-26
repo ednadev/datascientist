@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		#result {
+			width: 510px;
+			height: 100px;
+			background: skyblue;
+			display: flex;
+			justify-content: center;
+		}
+		.square {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			background: yellow;
+			text-align: center;
+			line-height: 50px;
+			margin: 15px;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		var numbers; //5, 23, 6, 12, 33, 45
+		var count = 0;
+		var intervalId;
+
+		function startGame() {
+			numbers = selectNumber();
+			intervalId = setInterval(displayNumber, 1000);
+		}
+
+		function selectNumber() {
+			var numbers = new Array(6);
+			var flags = new Array(45); //45로 바꿔도 됨
+			
+			//flags..1부터 45까지
+			for(i=0;i<flags.length;i++) {
+				flags[i] = i+1;
+			}
+			
+			//flags에서 랜덤으로 6개 추출
+			for(i=0;i<numbers.length;i++) {
+				numbers[i] = flags[Math.floor(Math.random()*flags.length)];
+			}	
+
+			return numbers;
+		}
+
+		function displayNumber() {
+			//append()를 이용해서 numbers 안에 들어있는 숫자를 result영역에 붙여나간다... (html 써도 됨)
+			//만약에 count가 6이되면 intervalId을 멈춘다...
+			if(count==numbers.length) clearInterval(intervalId);
+			else {
+				$('#result').append(`<div class="square">${numbers[count++]}</div>`);
+			}
+		}
+
+		window.onload = startGame;
+	</script>
+</head>
+<body>
+	<h3>대박을 기원합니다~~</h3>	
+	<div id="result"></div>
+</body>
+</html>
