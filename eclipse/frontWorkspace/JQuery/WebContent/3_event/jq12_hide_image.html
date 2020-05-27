@@ -29,9 +29,9 @@
 
 			//5. hover()
 			$('#mouseIn').hover(function(){
-				$('#imageView').fadeIn(2000);
+				$('#imageView').show(3000);
 			}, function(){
-				$('#imageView').fadeOut(2000);
+				$('#imageView').hide(3000);
 			});
 		});
 	</script>
@@ -43,3 +43,21 @@
 	</div>
 </body>
 </html>
+<!-- 
+	val()
+	html(), text()
+	setTimeout(function(){
+		// 동작...단 한번만..
+
+	}, 3000);
+	setInterval(function(){
+		// 동작...
+	}, 3000);
+	
+	bind(), click(), hover(), each()
+	unbind()
+	hide(3000), show('fast'), fadeOut(), fadeIn()
+	find()
+	addClass(), removeClass(), css()
+	mouseenter(), mouseleave()
+ -->

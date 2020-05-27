@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(function() {
+			//1. keyup()
+			$('textarea').keyup(function() {
+				var inputLength = $(this).val().length;
+				console.log(inputLength);
+
+				var remain = 70 - inputLength; // 40/70
+				//2. h1 태그 영역에 30/70 이렇게 출력이 되도록 작성....html()
+				$('h1').html(`${remain}/70`);
+
+				//3. remain이 50~70 사이면 글자색을 blue..css
+				//   remain이 30~49 사이면 글자색을 orange..css
+				//   remain이 10~29 사이면 글자색을 magenta..css
+				//   remain이 1~9 사이면 글자색을 red..css
+				//   더이상 글자입력이 안되도록
+				if(remain>=50) {
+					$('h1, textarea').css('color', 'blue');
+				} else if(remain>=30) {
+					$('h1, textarea').css('color', 'orange');
+				} else if(remain>=10) {
+					$('h1, textarea').css('color', 'magenta');
+				} else if(remain>=1) {
+					$('h1, textarea').css('color', 'red');
+				} else {
+					//$(this).val($(this).val().substr(0, 70));
+					alert("더 이상 글자 입력 안됩니다.");
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<div>
+		<p>방명록입니다...100자 이내의 고객님의 짧은 소견을 부탁드립니다.</p>
+		<h1>100</h1>
+		<textarea cols="70" rows="5" maxlength="70"></textarea>
+	</div>
+</body>
+</html>

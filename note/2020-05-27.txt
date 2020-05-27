@@ -1,0 +1,31 @@
+Event...
+1. Click -> click(), on()
+2. Mouse -> hover()
+3. ItemStateChange : select form에서 click이 아님 -> change()
+4. Key -> keydown(), keypress(), keyup() : 가장 마지막에 실행되는 keyup을 쓰는 게 좋음
+
+=================
+on 형태는 bind와 똑같음
+
+=====================
+localstorage == Web Storage API
+
+client - cookie, server - session
+localstorage는 완벽한 분리
+
+----> Before HTML5, application data had to be stored in cookies, included in every server request..
+Web storage is more secure, and...
+
+web storage : local, session (session은 버림, local만 사용)
+unlike cookies, the storage limit is far larger..
+
+window.localStorage - stores data with no expiration date (유효기간 만료가 없는..!)
+
+넣을 때 쓰는 메소드는 setItem
+가져올 때 쓰는 메소드는 getItem
+삭제하는 건 removeItem
+clear는 localStorage를 전부 다 지워버리는 ..
+
+
+w3school : jQuery Traversing
+-- find는 자식 중에서 찾을 수 있다.
