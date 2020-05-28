@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		img {
+			width: 65px;
+			height: 65px;
+			background: orange;
+			position: relative;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(function() {
+			$('img').animate({ left: '400px' }, 'fast');
+			$('img').animate({ left: '100px', width: '+200px' }, 'slow');
+
+			// $('img').animate({ width: '+50px' }, 'slow');
+			$('img').animate({ height: '100px' }, 'slow');
+
+			$('img').animate({ top: '200px' }, 'fast');
+			$('img').animate({ top: '50px' }, 'slow');
+
+			//1. 5초 뒤에 앵그리버드가 사라지도록...앵그리버드 숨었따..alert
+			setTimeout(function() {
+				$('img').hide();
+				alert('앵그리버드 숨었따');
+			}, 5000);
+
+			//2. 7초 뒤에 다시 나타나도록...팝업창 띄우고,,,"두두두두두두두~~~짜잔"
+			setTimeout(function() {
+				$('img').show();
+				alert("두두두두두두두~~~짜잔");
+			}, 7000);
+		});
+	</script>
+</head>
+<body>
+	<img src="../image/redbird.png" alt="">
+</body>
+</html>
