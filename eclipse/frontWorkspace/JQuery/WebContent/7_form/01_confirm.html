@@ -9,11 +9,17 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 		$(function() {
-
+			//1. a 태그의 속성중에서 w3 가 포함되어 있는 사이트를 클릭했을때
+			//   confirm 창 뜨면서 "w3schools/JQuery 사이트로 이동하시겠습니까?" yes 바로 이동
+			// a[href^=w3]  a[href$=w3]  a[href~=w3]
+			$('a[href*=w3]').click(function() {
+				return confirm($(this).text() + " 사이트로 이동하시겠습니까?"); //return 달아줘야 한다..
+			});
 		});
 	</script>
 </head>
 <body>
-
+	<a href="http://www.jquery.com">JQuery</a>
+	<a href="http://www.w3schools.com">w3schools</a>
 </body>
 </html>

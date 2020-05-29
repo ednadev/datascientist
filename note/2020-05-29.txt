@@ -1,0 +1,16 @@
+Form --- 마무리
+BootStrap --- 간단하게 살펴보자
+
+JQuery UI -- 위젯...Customizing...웹프로그램.
+--------------------------------------------------------------------------------
+Workshop --- LocalStorage + on( ) --- 함께(여러분 | 강사님이랑 같이)
+
+--------------------------------------------------------------------------------
+
+알고리즘 + ui 정리
+
+//
+
+Bootstrap : HTML5 + CSS3 + jQuery Front UI Framework
+- w3shools : HTML5, Bootstrap
+- jQuery는 jQuery 오리지널 사이트

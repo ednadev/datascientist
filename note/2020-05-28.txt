@@ -1,3 +1,35 @@
+알고리즘-->
+정올..
+https://www.ssafy.com
+
 오늘 수업..
 jQuery를 가장 많이 쓰는 부분은 form
 form을 핸들링해서 처리하는 부분 집중!
+
+each를 가장 많이 사용! (for문과 비슷)
+
+---------------------
+
+size()
+for(int i=0; i<100; i++)
+
+
+///////////////
+///////////////
+//////////////
+////////////
+
+알고리즘 하기 좋은 언어는
+C -> Java -> C++.. 가장 안 좋은게 Python
+
+
+
+learn...
+jQuery HTML
+- jQuery Set
+
+
+1001:쿵푸팬더,img/movie_image2.jpg,3000
+localStorage.setItem(kval, vval);
+localStorage.removeItem(kval);
+localStorage.getItem(kval);

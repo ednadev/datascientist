@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Menu - Default functionality</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/sunny/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#menu" ).menu();
+  } );
+  </script>
+  <style>
+  .ui-menu { width: 150px; }
+  </style>
+</head>
+<body>
+ 
+<ul id="menu">
+  <li><div>Framework</div>
+    <ul>
+      <li><div><a href="https://mybatis.org/" style="text-decoration: none;">MyBatis</a></div></li>
+      <li><div>Spring MVC</div></li>
+      <li><div>AOP</div></li>
+    </ul>
+  </li>
+  <li><div>Image Processing</div>
+    <ul>
+      <li><div>FullyConnected</div>
+        <ul>
+          <li><div>ANN</div></li>
+          <li><div>DNN</div></li>
+          <li><div>CNN</div></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><div><a href="https://oracle.com" style="text-decoration: none;">Oracle</a></div></li>
+</ul>
+
+</body>
+</html>
