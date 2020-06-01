@@ -1,0 +1,196 @@
+오늘부터.. Web
+- Servlet (logic 중심) : MVC Pattern (아키텍처 구조, WAS) + Ajax(비동기), Algorithm 
+- JSP (Tag 중심)
+
+--> (DB 모델링) 2주 프로젝트 
+--> 파이썬, 데이타 분석 - [프로젝트] Data만 (+분석 할 수 있는 템플릿)
+     머신러닝/딥러닝 https://www.kaggle.com - Image Processing (딥러닝 - 파이토치, 케라스 Keras, 텐서플로) // 강화학습 등은 제외 (하드웨어랑 연관)
+--> Framework + Vue (+CLI)
+
+===========================================
+
+[Front UI] ( HTML5, CSS3, JavaScript - JQuery ) = Bootstrap
+- on 함수! (미래 만들어지는 컴포넌트 이벤트 처리는 on)
+- (WebStorage) localStorage
+- .html (프로그래밍 X - 동적 X, 동적이라는 것은 input이 들어오면 output이 변하는 것) : Static Document, Script Language
+----- >> 인트로 페이지와 결과 페이지로 나눌 수 있다. 지금까지 다룬 프론트로는 인트로 페이지
+
+* Server Side {
+Front Server
+    (현재) Servlet --> Architecture 순서대로 공부!
+    - 설치된 Apache Tomcat이 서버
+    - 오각형으로 Servlet을 그린 이유는.. 자바랑 구분하기 위해서
+    - Servlet은 자바로 만들어졌지만 자바랑 다른 기술 (JVM이 아닌 Tomcat에서 돌아간다)
+    - JVM과 Tomcat(서버)의 관계.. 
+      HㆍW > OㆍS > JVM > Database.class : J2SE
+      HㆍW > OㆍS > JVM > Apache Tomcat(Server) > Servlet, Java.class : J2EE
+    1. Servlet을 만들고
+    2. Server(Tomcat)에 배포
+    3. Client 요청 받고
+    4. Client에게 응답
+
+[Java] Model 
+- VO (정보 저장)
+- DAO(DB Access Object)
+             | --> DML , <-- SELECT [JDBC]
+}
+[MySQL] DB : 스키마 (테이블 : row, colum)
+===== >> Dynamic Language
+
+=====================================================
+* 책을 추천한다면.. 한빛미디어 Head First 시리즈.. 내용은 좋은데 설명하는 방식이.. // 책은 의미 없음
+
+Servlet
+1. Servlet 만들고  2. Server(Tomcat)에 배포  3. Client 요청 받고  4. Client에게 응답
+Tomcat 홈(C > kmg > apache-tomcat-8.5.55)에서 webapps, conf, bin, work 정도 알아야 함
+
+http://tomcat.apache.org/tomcat-7.0-doc/servletapi/index.html
+- javax.servlet : Classes - GenericServlet
+- javax.servlet.http
+
+--------------------------------------------------
+javax.servlet.GenericServlet 
+Servlet을 만들기 위한 Servlet API를 설명.. (아키텍처 API 구조.. 알면 좋음)
+
+Servlet은 어디서 돌아가는 기술인가.. Tomcat (WAS, Container), ServerSide
+Servlet은 자바 기반으로 만들어졌다
+5시간 걸리는 걸 5분만에 만들려면 재사용! 상속받아서 쓴다.
+
+가장 중심이 되는 클래스.. GenericServlet
+// implements Servlet, ServletConfig
+-- (부모) --> Servlet <<interface>>인터페이스, ServletConfig <<interface>>인터페이스
+
+서블릿 스러운 기능은 Servlet 인터페이스에서, ServletConfig에서는 advanced한 기능.. WAS와 연결된 부분
+
+A.extends GenericServlet {
+
+}
+
+부모를 알아야 한다! Servlet
+init(), service(), destroy() + getServletConfig()
+-- getServletConfig() : getter
+ServletConfig 객체를 return (반환),, return 타입은 ServletConfig
+-- init(ServletConfig config) : setter
+인자값이 ServletConfig
+
+====> 여기서 알 수 있는 것은 Association : Servlet - ServletConfig
+
+ServletConfig
+getInitParameter(), getInitParameterNames() + getServletContext()
+-- getServletContext() : getter
+ServletContext를 return(반환)
+-- setter가 없음.. 그건 나중에 설명!
+
+======> Association : ServletConfig - ServletContext
+
+
+다시 GenericServlet
+1. 부모한테서 받은거 말고 추가된 기능은.. log()
+2. (오버로딩) 물려받아서  init() --> 인자값 없애버림 .. convenience
+    A convenience method which can be overridden so that there's no need to call super.init(config).
+3.  service() {} 사용!! 가장 중요. (오버라이딩)
+--- 여기 오버로딩과 오버라이딩 다시 구별해보기
+
+클라이언트에서 submit 전송을 요청하면 
+Servlet인 A에서 service 메서드로 들어간다.
+service(ServletRequest req, ServletResponse res)
+- ServletRequest (클라이언트에서 객체가 담겨져서 오는 것, Command) : Client의 요청 정보
+- ServletResponse (클라이언트에게 넘기는 객체, Command 안에 있는 Result) : 요청을 수행한 후 응답
+Association : ServletRequest<<interface>> <----- Hashing --- service(ServletRequest, ServletResponse) --- Hasing ---> ServletResponse <<interface>>
+
+
+
+--------------
+
+Project 시작!
+Server에서 Use Tomcat installaion으로 선택하고 Deploy path를 C:\kmg\apache-tomcat-8.5.55\webapps으로 설정
+
+Dynamic web module version을 2.5로 낮춰준다.. WAS의 원리를 알기 위해서
+이해 후 프레임워크에서는 뭘 쓰든 상관 없다.
+모든 프로그래밍 코드는 src, Default output folder: build\classes 로 되어 있다.
+
+2.5로 바꾸면 Generate web.xml depolyment descriptor가 자동으로 체크되어 있다. annotation 기반을 안 쓴다는 것! 개발자가 핸들링 할 수 있는 부분이 많아진다.
+3.1 버전은 annotation 기반으로 만들어졌기 때문에 web.xml을 볼 수 없다. WAS가 알아서 처리하게 됨
+
+workspace랑 web - html, css, jsp 한글 처리 (utf8)
+
+
+C:\kmg\apache-tomcat-8.5.55\webapps\web01_GenericServlet
+--> 저장되어 있지 않음
+정적인 문서는 contextpath 바로 밑에
+서블릿은 (C:\kmg\apache-tomcat-8.5.55\webapps\web01_GenericServlet) WEB-INF - classes, lib, web.xml
+이클립스에서 소스 밑에 저장되는 프로그램은 was 에 배포될 때 WEB-INF 링크로 들어간다.
+WEB-INF 밑에 classes 폴더, lib 폴더, web.xml 이 들어있다. 
+
+C:\kmg\apache-tomcat-8.5.55\webapps\web01_GenericServlet\WEB-INF\classes\servlet\generic
+
+
+Client -- request(요청) --> WAS [ Servlet : GenericServletTest1 ]
+ : 객체를 생성하는 제어권이 WAS에게 있다. (내가 만드는 것이 아닌 WAS가..)
+ : 개발자는 WAS에 배포만 한다.
+ : 서버가 인식할 수 있는 기술이 xml.. 프로그램은 인간이 이해하는.. 
+ : xml 없으면 인스턴스 못 만든다.
+
+서버가 가동되면서 하는 일
+1. web.xml을 읽어들인다. (C:\kmg\apache-tomcat-8.5.55\webapps\web01_GenericServlet\WEB-INF)
+annotation이 편하다.. 개발자 입장에서는 / 기업입장에서는 xml을 고수해야 한다.
+
+WAS가 서블릿 인스턴스 정보를 알아야 하는 이유?
+WAS가 서블릿을 만들어 주니까
+
+xml은 메타데이터다.. 태그가 의미하는 게 있다.
+<servlet></servlet> : 어..? 서블릿 인스턴스 (어는 왜 붙는거야..?)
+인스턴스 객체 생성한다는 의미
+web.xml은 서블릿 정보를 저장하는 곳
+was가 연결, 주문서를 작성하는 것은 개발자 -- IOC (제어하는 역할이 역전했다는 의미)
+작성한 주문서를 읽는 것이 was. was는 이것만 볼 줄 안다.
+
+Client는 여러명.. Client의 요청을 받는 곳이 Web Server
+-- Web Server : httpd, 데몬 서버, Reception Desk (서버 사이드의 관문 역할) / Web Server 어딘가에 index.html (web app 밑에 바로! context path // 정적인 페이지는 바로 웹 서버에서 응답할 수 있음 (body 태그 사이의 내용), 최초의 요청 (웹사이트라고 함 - 홈페이지라고 하는 이유가 정적인 페이지로만 이루어져 있다.)
+=== submit으로 요청할 때 form에서 action이 서블릿으로 동작..
+* Web Server의 역할
+1. 모든 요청을 받는다. (Servlet도 마찬가지)
+2. 요청이 SㆍD / DㆍD 인지 판단 (Static은 응답, Dynamic은 아래로 내린다..WEB-INF)
+3. 요청에 해당하는 파일을 찾아서 Body 사이의 내용을 다시 담아서 응답
+
+WEB-INF : 정적인 문서와 동적인 문서를 나누는 기준이 되는 디렉토리
+request, response 두 개의 객체를 만든다. (요청에 대한 정보가 들어 있고, 응답은 미리 만들어 놓는다)
+WAS가 수행하자마자 
+1. web.xml을 읽어들인다. (Servlet은 이때 이미 인스턴스가 만들어짐)
+2. Servlet 매핑 정보, Servlet 생성
+3. 요청 정보를 바탕으로 Request, Response 객체 생성
+4. service( ) calling.. 위에서 만들어놓은 객체 2개가 인자값으로.. service 하나가 호출 된다는 것은 쓰레드 하나가 만들어진 거랑 똑같다. 
+   메서드가 호출되는 건 클라이언트의 요청이 들어왔을 때
+
+-- WAS (=Container)
+
+
+====================
+
+CGI(Common Gateway Interface) 기술 : (논자바) ASP, PHP, pearl / (자바) JSP, Servlet
+- Server(Container) 상에서 실행되는 Program을 통칭
+(논자바 형태)
+request(요청)가 1번.. process 하나가 동작할 때 사용되는 메모리가 2칸
+동일한 요청이 2번.. 새로운 요청으로 인식되기 때문에 똑같은 process가 2개 생성되면서 메모리가 6칸을 차지한다.
+(자바 형태)
+요청이 들어오기도 전에 인스턴스가 이미 만들어져 있다.
+요청을 하면 쓰레드가 만들어지면서 서비스 메소드가 동작한다. (서비스 1개 = 쓰레드 1개) 
+쓰레드가 생성되는 시점은 요청이 들어올 때!
+요청을 다 수행했다는 건 메모리에서 death.. 죽어서 없음
+쓰레드가 동작한다는 것은 그때마다 서비스가 돌아간다.
+하나 만들어놓은 서버 인스턴스는 서버 종료될 때까지 남아 있다. (서버는 종료되는 일이 없다)
+servlet 자체가 자체적으로 멀티쓰레딩 기반이 자동으로 제공된다.
+메모리는 2칸만 차지.. (메모리를 많이 차지 하지 않는다)
+
+
+================================================================= 
+부모 : Servlet 인터페이스(init - 생성, service - 기능 구현, destroy - death), ServletConfig 인터페이스
+[GenericServlet 클래스] 유일하게 오버라이딩 하는 건 service! "니가 구현 해!"
+자식 : HttpServlet (인자값 : HttpServletRequest, HttpServletResponse .. hasing 관계) -- request와 response도 상속 관계! 위와
+
+javax.servlet : protocol 독립적 - HTTP 뿐만 아니라 FTP, TELNET 등 다양한 프로토콜에서 동작할 수 있다.
+javax.servlet.http : protocol 종속적 - HTTP 프로토콜에서만 사용할 수 있다 (이걸 쓰는 게 맞음! 특화되고 specific한 걸 써야 한다)
+
+
+
+
