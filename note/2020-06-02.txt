@@ -1,0 +1,70 @@
+오늘 수업..
+ServletRequest
+ServletResponse
+WAS 메카니즘
++) javax.servlet.http
+
+=============================================================================
+JVM 위에 WAS가 탑재
+Container (=WAS) : 메모리 공간 (JVM보다 광범위), Servlet들이 존재하는 환경
+
+[클래스 다이어그램 (정적인 다이어그램, ER도 정적..)] <-> [동적인 다이어그램 = 유스케이스 다이어그램]
+Servlet (Servlet 기능들) -- Association -- ServletConfig (WAS 관련 기능들) [ -- Association -- ServletContext ]
+GenericServlet : init() 인자값 X, service(reg, res) 인자값으로 들어왔다! hasing 관계 (ServletRequest, ServletResponse)
+
+{
+ServletRequest : Client(Browser) --> Server, 제출 버튼을 눌렀을 때 폼 값들을 가지고 가야함
+  -- Defines an object to provide client request information to a servlet.
+  -- The servlet container creates a ServletRequest object and passes it as an argument to the servlet's service method.
+  ------> getParameter("폼이름") : return String
+  ------> getParameterNames() : 모든 폼 값을 다 가져옴
+  ------> getParameterValues("폼이름..? 값..?") : return String 배열 (체크박스)
+  ------> setCharacterEncoding(java.lang.String env) : 한글처리
+             (form-method) 
+              - GET 방식(기본방식)에서는 필요 없는 이유.. ServletRequest에 담겨져서 가는 게 아니다
+                              : Get it.. 페이지 연결이 목적 (페이지 전달은 부수적 : 주소창에 붙여서 보낸다)
+                               [ request line(method=get, FS), header(client-browser 정보), body (x) ] == Request
+                               body에 담겨져 있지 않는데 getParameter가 가능한 이유?
+                                  --> 주소창에서 getParameter로 가져옴
+                                  --> ? 뒤에 userID (폼 이름) = value (값) .. 
+                               한글처리가 된 이유?
+                                  --> tomcat 홈 - conf : 63번째 줄
+                                       <Connector URIEncoding="utf-8" connectionTimeout="20000" port="8888" protocol="HTTP/1.1" redirectPort="8443"/>
+                                  --> 한글처리를 WAS에서 한다
+                               한글 처리가 중요하지 않는 이유?
+                                  1. 깨지면 안깨지게 하면 된다.  
+                                  2. 현업에서 사용하는 대부분 WAS는 이미 한글처리가 되어 있다. 
+              - POST 방식은 ServletRequest에 담겨져서 가므로 필요하다!
+                              : Post Office.. 데이터 전달이 목적 (데이터를 전달할테니 서비스에서 처리해 준 결과를 보내줘!)
+                               [ request line(method=post), header, body(userId=111, userPass=나나나, menu=파스타..) ] == Request
+ServletResponse : Server --> Client(Browser)
+  ------> getWriter()  // PrintWriter return 받기 전에 한글처리 해야 한다. 가급적으로 한글처리부터 먼저 하는 것이 좋다.
+  ------> setContentType(java.lang.String type) : 한글처리
+}
+
+------ javax.servlet(위 : Common)    /    javax.servlet.http(아래 : Specfic HTTP) ------ : http의 특화된 기능이 추가된 것이 아래
+
+HttpServlet -- hasing 관계 (HttpServletRequest 인터페이스, HttpServletResponse 인터페이스)
+                                       --> 인터페이스 간의 상속을 하면 좋은 이점.. 기능 강화! 상속받은 기능 + http 특화된 기능 추가)
+- service(req, res)
+- service(hreq, hres) = doGet(hreq, hres) : Get 방식 = doPost(hreq, hres) : Post 방식
+                           그외에 doPut(), doDelete(), doXxx() ... Restful 서비스에서 사용하는 핵심적인 기술!
+  doPost로 받든, doGet으로 받든.. service가 무조건 먼저 호출된다. service가 doPost랑 doGet을 재호출한다.
+서버사이드 핵심은 Restful API + JSON 방식! UI에서는 Vue (현재 많이 쓰이는 건 React)
+만약 POST 방식인데 doGet을 쓰거나, GET 방식인데 doPost를 사용하면 405 에러가 발생한다.
+
+
+=======================================================================================
+[Servlet_JSP.pdf]
+C:\kmg\apache-tomcat-8.5.55\lib - 여러 프로젝트 같이 쓰는 라이브러리 (.jar)
+C:\kmg\apache-tomcat-8.5.55\webapps\web03_HttpHeader\WEB-INF\lib - 한 프로젝트에서 쓰는 라이브러리(.jar)
+두 개의 차이.. 한군데만 넣어야 한다 
+
+HTTP 요청 및 요청방식
+- Connection : Keep-Alive (항상)
+GET 방식에서 데이터 요청 보다는.. 페이지 연결이 목적
+
+HTTP 응답 - HttpServletResponse 객체
+Body : out.println 부분의 내용이 담긴다
+
+
