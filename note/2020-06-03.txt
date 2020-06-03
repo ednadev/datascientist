@@ -1,0 +1,117 @@
+[Client]
+
+[Middle Server]
+-- WAS (Container) 가 가동하고 -- 
+1. web.xml(Deployee Descriptor, DD 파일)을 읽어들인다. -- 서블릿 정의, Initialization 정보
+2. 서블릿 생성 -> 기본(default) 생성자 호출 : 명시적 생성자 호출 X - 내가 하는 게 아니라.. 서블릿 만들 때마다 기본 생성자를 지워버린 이유이기도 함.. 어차피 만들어지니까
+   서블릿 이름은 클래스 이름을 하는 경우가 컨벤션!
+3. ServletConfig 객체가 생성
+4. init (ServletConfig 파싱 인투) calling(호출)
+--> 객체 생성 후 init 호출!! 기본 생성자만 만들 수 있어서 필드 initialization을 만들어 준 것
+===> 1, 2, 3, 4번은 Only One (한 번만 실행된다)
+-------------------------------------------------------------- 여기까지가 Ready-On 상태 (서비스를 받기 위한 준비 상태, 클라이언트의 요청을 받을 수 있다)
+===> 5, 6, 7번은 Repeat (매번 새로운 요청이 들어올때마다 반복)
+{
+클라이언트 요청 
+  --> Web Server(httpd) 
+       --> 정적인 문서는 Container로 끌어내린다.
+             --> Request, Response 객체를 만든다.
+                  --> Thread가 만들어진다 = service 메서드가 호출 --> doGet/doPost 재호출 --> 미리 만들어 놓은 request, response를 인자값으로 받는다
+}  // 해당 내용 정리하면,,
+5. Client가 요청을 하면 request, response 객체가 생성
+   service(req, res) calling (request, response가 파싱 인투!)  --> thread 생성
+6. service 실행  --> 응답 (response 객체가 httpd 관문을 거쳐서 클라이언트한테 response)
+7. request, response, thread가 Death (메모리에서 언바인드) .. 메모리에 남는건 Servlet
+(흔하지 않아서 의미없지만..) 6. server stop : destroy 호출
+
+[DB Tier (Resource)]
+
+=========================================================================================================
+
+Servlet : init, service, destroy
+LifeCycle : 콜백(Call-Back) 메서드!
+바깥에 있는 WAS가 접근해야 하는데 public이 없으면 접근하지 못한다. (500에러 확인)
+서버 탭에서 서버를 중지시키면 반드시 destroy가 호출된다
+저장은 destroy, 가지고 오는 건 init
+web.xml에서 servlet에 load-on-startup을 한다.. (preloading..) <--> lazyloading
+서블릿은 로직 중심.. 현재 들어간 태그는 들어가면 안된다..
+서블릿에 태그가 들어갔다는 건 화면 출력까지 담당했다는 것! (output 까지 담당... 그건 아님)
+output은 JSP.. 서블릿과 같은데 태그로 바꾼 것! (같은 기술이지만 역할을 나눔) 
+
+JSP는 스크립트 중심, Servlet은 로직 중심
+
+
+== [Servlet_JSP] ==
+9. Web Contaienr와 배치
+Web Application Root --> (Root) Context가 더 어울림
+
+10. web.xml
+DD 파일의 역할 : 서블릿 등록, (점심시간 이후) 초기 파라미터 등록, 보안 설정( Security 과정이므로 제외)
+WEB-INF : classes, lib, web.xml
+수정시.. WAS 재가동
+
+11. Servlet class 작성 패턴
+- 무조건 public을 붙여야 한다.
+- HttpServlet 상속
+- 기본..Default 생성자 필요
+- service 메서드는 --> doGet이나 doPost를 overriding
+- servlet : servlet-name, servlet-class // servlet-mapping : servlet-name, url-pattern 
+
+12. 서블릿 상속구조
+가장 중심이 되는 건 GenericServlet ---> javax.servlet에서 (프로토콜 종속적이냐.. 이 차이를 알고 있어야 함)
+HttpServlet이 물려받으면서 Servlet 기능과 http 특화 기술까지 
+
+13. Servlet의 라이프 사이클
+Lifecycle(Callback) 메서드 : init, service, destroy
+
+17. 서블릿에서 요청파라미터 처리 : ServletRequest - getParameter, getParameterValues
+
+18. ServletConfig, ServletContext
+
+
+=======================================================================
+
+jsp는 Dynamic Document인데 WEB-INF에 들어 있지 않다.
+이유는 Script Language여서 배포되는 위치는 html과 똑같다.
+
+C:\kmg\apache-tomcat-8.5.55\work\Catalina\localhost\web04_Lifecycle\org\apache\jsp
+--> 컨테이너는 JSP를 인식하지 못함.. JSP 파일은 WAS가 로직 중심의 Servlet으로 바꾸고 
+     컴파일해서 .class 실행 파일을 만들고 
+     인스턴스 생성 -> init 호출 -> service! (Servlet과 똑같은 과정)
+     배포 위치는 root 바로 위치해 있지만 work에 고스란히 담겨져있다.
+    
+ServletConfig (Servlet API)
+A servlet configuration object used by a servlet container to pass information to a servlet <during initialization> 초기화 하는 동안!
+
+== 1) A Servlet Instance Initialization
+중요한 건 : A, Initialization
+Application 차원의 글로벌한 Initialization이 있다.
+
+WAS에서
+1. DD 파일
+2. 서블릿 생성한 직후에
+3. ServletConfig가 만들어진다.
+    ServletConfig는 Servlet과 1대1이다. Servlet 하나당 ServletConfig 하나가 만들어진다.
+4. init 메서드 호출되고 ServletConfig가 인자값으로 들어간다.
+
+== 2) Container 차원의 값 (= Extra Resource, 외부자원) 으로 초기화
+xml에서 설정하는 방법을 알아야 한다..
+요청하기 전에 세팅을 하는 상황이라 form 값을 가져오지 못한다.. 그럼에도 초기화는 필요하다 --- readyon 상태라..
+
+ServletConfig
+- getInitParameter (getParameter와 비슷.. getParameter는 클라이언트의 요청으로 화면으로부터 값을 받는 것)
+web.xml 설정된 값 -> 외부자원 -> Extra Resource
+<init-param> // 맵방식
+    <param-name> 별
+    <param-value> ☆
+</init-param>
+String 별 = getInitParameter("별")
+- getInitParameterNames, .. 
+
+
+Create Servlet
+-- Initialization parameters 설정 가능하도록 되어 있음
+
+\\asdasd11.iptime.org\util
+
+ 
