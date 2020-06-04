@@ -1,0 +1,155 @@
+오늘 수업..
+Server Side
+전체적인 Flow, 구조..
+* Attribute : HttpSession..현업에서는 이것만 알다보니 나중에
+* 페이지 이동방법 - 2가지 방법은 Attribute와 연관시켜서 어떤 걸 써야 하는지
+Controller -- 중요한거라 아무도 못 만지게 함! 라이브러리로 만들어버림.. 그게 바로 스프링 프레임워크 등등~~
+
+내일 .. 비즈니스 로직 직접 연결
+
+다음주부터는 웹 단 프로그래밍을 크게! 나갈 예정.. Ajax - 자바스크립트, jQuery 둘 다 만들어 볼 예정, 알고리즘 실력 같이
+
+===================================================================================
+
+클라이언트가 요청하기 전에.. container가 먼저 가동
+1. DD 파일을 읽는다.. (DD파일에는 서블릿 등록 + 서블릿 config 객체를 통한 초기화 Initialization)
+2. 서블릿 인스턴스 생성 + Servlet Config 생성 
+load-on-start를 사용!
+------------------------------------------------------ready on 상태 : 요청과 상관없이 1번만 만들어짐
+(회원가입 등을 했을시)
+클라이언트 요청! (연결 - http)요청을 받은 서블릿은 
+{ [Controller - Servlet]
+1. 화면에 있는 폼 값 받는다. (Serverside에서 Front단)
+2. VO 객체 생성 (MemberVO)
+3. DAO 리턴 받고
+4. 비즈니스 로직 호출 : register Member(VO)...
+}
+[Model : MemberDAO]로 DB 연결 (연결 - jdbc:mysql)
+==> 정리하자면, 브라우저 - 서블릿 - VO - DAO - DB
+(검색했을시)
+1. 폼 값 받는다.
+2. DAO 리턴 받고
+3. 비즈니스 로직 호출
+DAO에서 DB.. DB에서 VO로 보낸다. 비즈니스 로직 호출하는데서 리턴된다.
+[View] --> jsp로 만들어짐
+
+=========================================
+
+A라는 프로그램에서 객체를 DB를 통해 받아옴.. B 결과출력하는 곳에서 뽑아서 출력
+서블릿을 내가 생성한게 아니라서 만들지를 못한다.. 핸들링을 못함 (서블릿에선 개발자가 객체 생성을 하지 못함)
+헤징으로 A랑 B를 연결할 수 없다
+
+서버상에서 만들어지는 객체에 집어 넣고 가져다 쓴다..
+이때 사용되는 객체가 Attribute이다.
+
+가장 글로벌한 Attribute : ServletContext (API 확인) -- WAS가 가동되고 DD를 읽고 나서 제일 먼저 만들어진 객체는 Servlet보다 ServletContext가 먼저 만들어진다.
+Defines a set of methods..(setAttribute, getAttribute) servlet uses to communicate with.. (servlet에서 데이터 전달)
+프로그램에서 보낼 때는 setAttribute("별", ☆); .. Attribute (별이라는 이름으로 ☆ 저장) .. 결과 출력하는 곳에서 getAttribute("별"); .. ☆ 전달
+1. setAttribute : 데이터를 Attribute에 바인딩 (binding)
+2. getAttribute : 데이터를 Attibute에서 lookup 찾아간다.
+
+
+---- Container안에서 Servlet간의 Communication (Register - View)
+   : setAttribute - Attribute - getAttribute
+
+jsp의 application은 servlet의 context와 똑같다
+
+평점 평균 매겨서 보여주고 싶을 때
+로그인 여부와 상관없이 보여주려면 ServletContext를 사용하면 된다.
+
+HTML 주석은 소스코드에서 보인다. JSP 주석은 실제 소스코드에서 보이지 않는다.
+
+
+WAS 안에 A로 가기 전에 필터를 이용해서 요청을 걸러낸다.
+모든 요청의 목적지는 DB (request flow)
+response flow는 반대.. 다시 필터를 통과해야 응답할 수 있다.
+chaining으로 걸른 내용을  다른 애들한테 모두 chaining(체이닝) 시키면 된다.
+
+모든 요청을 필터에서 가지고 있으면 다른 곳에서 할 필요가 없어진다.
+web.xml (DD) 에서 url-pattern : /* -> 모든 요청 다 받아온다.
+
+====================================================
+
+Attribute : 서버상에서 데이타(객체)를 보관하는 저장소
+1. setAttribute("", object) : 보관 (=Binding)
+2. getAttribute("") : Look Up
+--> set of Method
+* Attribute 종류 : ServletRequest, HttpSession, ServletContext
+동일한 메소드가 서로 다른 객체에 존재할 때는 기능은 똑같다 (이름이 같으니까)
+서로 다른 곳에 존재한다는 건 차이점이 있다 --> 데이터가 보관되는 Scope가 다르다 --> 데이터가 저장되는 유통기한이 다르다
+ServletRequest < HttpSession < ServletContext (제일 길다.. 모든 애들이 공유할 수 있는 걸 저장해야 한다)
+- ServletRequest : 응답할때까지
+- HttpSession : 로그아웃할때까지.. 로그인 되어 있는 동안
+- ServletContext : 서버 내려질때까지..
+
+
+=============================================
+
+1. 가입 버튼을 누르면 EntranceServlet으로 들어간다.
+2. 그 이후 작업은 앞에서 설명하는 것과 동일
+3. Container는 제반 환경.. 이 안에서 만들어지고 이안에서 death 된다.
+4. 내가 만들지 않은 게 ServletRequest, HttpSession, ServletContext.. 
+- ServletContext : 가동되자마자
+- ServletRequest : 요청하면
+- HttpSession : 요청하면
+5. ServletRequest : 요청하면 만들어진다.. 거기에 list를 만들어놓음.. 
+응답하는 순간 ServletRequest는 death.. 이미 list가 없어진 상태라 NullPointer
+
+==============================================
+
+페이지 이동시키는 2가지 방법
+1. Forwarding
+2. Redirect
+
+== Forwarding
+Servlet에서 일어나는 일
+1. servlet 생성
+2. vo 
+3. dao
+4. 비지니스 로직
+5. attribute로 바인딩 : forward는 direct로 jsp로 간다... servletrequest 안 죽음.. 응답은 view.jsp에서 함
+6. 네비게이션
+
+원래 로직은 2번 요청, 2번 응답
+forward로 하게 되면 컴포넌트가 2개여도 1번 요청, 1번 응답
+
+RequestDispatcher rdp = ServletRequest.getRequestDispatcher("page")
+
+RequestDispatcher	getRequestDispatcher(java.lang.String path)
+Returns a RequestDispatcher object that acts as a wrapper for the resource located at the given path.
+
+rdp.forward(req, res) : request, response 모두 가지고 이동! 
+모든 명의는 Servlet.. 페이지는 jsp 페이지가 열려있어도
+명의가 jsp로 넘어가므로 servlet에서의 응답권이 없어짐
+
+
+1. ServletContext
+2. dd에 매핑된 servlet이 만들어짐
+3. servlet과 연결된 servletConfig가 만들어짐
+4. servletRequest.. ServletResponse가 알아서 만들어지는데
+5. Controller 역할을 하는 Servlet이 1) 폼값 받아서
+    2) vo 생성 : 자바 (개발자가 new로 생성) MemberVO
+    3) DAO 리턴 : MemberDAO도 메모리에 올라간다  ----> DB랑 Access를 통해 통신이 연결되어 있음
+    4) BIZ 비즈니스 로직 : DAO에서 데이터를 리턴해옴
+    5) 바인딩 : ServletRequest에
+    6) 네비게이션 : forwarding으로 jsp에 direct로 이동 - request, response 넘김, jsp에서는 servletRequest도 받아감
+jsp에서 요청한 곳으로 응답함
+
+M : MemberVO, MemberDAO
+V : JSP
+C : Controller (Servlet)
+
+MVC -> Front Controller -> Factory Method Pattern
+  
+도서번호는 11--..
+도서종류는 4가지 정도.. 운영체제.. 등등 
+출판사는 엔코아, 한빛미디어 등등..
+
+도서등록 : RequestDispatcher
+리스트 쓰지 않고.. Book (1권)
+
+
+어떤 책을 등록했는지 몇가지만 추가
+
+추가 등록, 도서목록은 비즈니스 로직과 함께 같이 돌릴 생각
+
