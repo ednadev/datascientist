@@ -1,0 +1,82 @@
+RequestDispatcher
+   --> request.getRequestDispatcher("-") : 상대경로 O
+   --> context.getRequestDispatcher("-") : 절대경로만 가능
+   같은 기능을 가지고 있지만 차이점이 있다.. 대체로 request.getRequestDispatcher에서 가져옴
+
+1. rdp = request.getRequestDispatcher("-")
+2. rdp.forward(request, response) : 서버상에서 바로 이동.. 응답을 X
+   rdp.include(request, response)
+
+
+Redirect
+
+
+Stateless한 protocol : 기존 request와 response가 따로 2번 일어난 로직은 각각의 request와 response가 전혀 관련없다..
+
+
+단순조회 : 검색
+[Servlet]
+1. 폼 값
+2. DAO
+(가장 중요) 3. 비즈니스 로직 호출
+4. request에 바인딩
+5. 네비게이션 --> jsp로
+[JSP]
+받아와서 뿌리고 응답!
+
+
+** WAS에서 다른 모든 걸 만들어주는 이유! 비지니스 로직 호출!!에 집중하라는 것
+
+
+- include는 다시 servlet으로 돌아와서 응답한다.
+- forward나 include는 응답하면 다 죽는다.
+
+==========================================================
+
+Redirect (방향을 다시 잡는다..)
+1. "남부터미널이 어딨어요?" MeServlet에 요청
+** 2. - MeServlet이 응답 : "나는 남부터미널... 몰라요. But, <엄마는 알거예요 : 헤더의 방향을 바꿈>"
+3. "남부터미널이 어딨어요?" MotherServlet에 요청
+4. - Mother이 응답
+
+HttpServletResponse (ServletResponse에는 없다)
+sendRedirect()
+
+Redirect를 하게 되면 ServletRequest Attribute를 사용할 수 없다. 응답을 하기 때문에
+forward는 같은 서버만 연결 가능, redirect는 다른 서버도 연결할 수 있다.
+
+====================================================================
+경우에 따라 Redirect와 Forwarding을 사용하는지를 알아야 한다
+1. sendRedirect 방식은 정적인 문서로 가야하는 경우 (브라우저를 걸쳐야 하는) .. 이때는 forwarding이 되지 않는다.
+2. 에러페이지는 redirect로!
+
+===========================================================================
+model
+- VO
+- DAO : 싱글톤 패턴 + 템플릿(인터페이스)
+
+===========================================================================
+index.html
+{ 
+	CafeMember
+	(중요) - 회원가입  --> register.html : '가입' 버튼 --> RegisterServlet (매핑 : RGS)  -->  allShow.jsp : '~~'가 가입하셨습니다.. 전체 회원 목록 같이 보여주기
+	 						1. 폼
+ 							2. vo생성
+							3. dao 리턴 받아서
+							4. 비즈니스 로직 registerMember 호출
+	(중요) - 회원검색  --> search_member.html : '조회' 버튼  --> FindMemberServlet (매핑 : FMS)  --> find_ok.jsp / find_fail.jsp (회원 정보가 없을 때)
+								1. 폼
+								2. dao 리턴 받아서
+								3. 비즈니스 로직 findmember..  호출
+								4. 바인딩
+								5. 네비게이션
+	- 로그인 
+	- 회원정보수정
+	(중요) - 전체회원보기  --> AllMember --> AllMemberServlet (매핑 : AMS) --> allShow.jsp
+						1. dao 리턴 받기
+						2. 비즈니스 로직 호출
+						3. 바인딩
+						4. 네비게이션
+}
+
+--> 바인딩의 차이 : 바인딩 하면 forward로 jsp 페이지로 이동, 바인딩 하지 않은 건 redirect로 넘어감 이때 넘기고 싶은 값은 get 방식으로 보낸다.
