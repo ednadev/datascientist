@@ -1,0 +1,18 @@
+index.jsp
+--> 인증여부  <Container>  --- <View>
+회원검색 ----- FMS            ---   ok, fail
+회원정보수정 ---- Update   ---    
+로그아웃 ---- Logout        ----
+전체회원보기 
+로그인 ---- Login              ---   ok, fail
+회원가입 ---- Register
+
+Model : MemberDAO, MemberVO
+
+-----> Container에 Servlet을 하나로 만들자! Front Controller Pattern
+
+
+=============================================
+
+3.1부터는 web.xml이 없다.. 코드에 Annotation으로 변경
+서블릿 하나의 로직을 
