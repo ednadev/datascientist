@@ -1,0 +1,45 @@
+index.jsp < 인증여부 - 회원검색 (find)             (command) --> DispatcherServlet                                     --> DAO, VO  --> DB
+                            - 회원정보수정 (update)                        1. command 값 받는다
+                            - 로그아웃 (logout)                              2. find, update, logout .... (네비게이션)
+                            - 전체회원보기 (showAll)                       3. public String find(req, res) { return path } 
+                            - 로그인 (login)
+                            - 회원가입 (register)
+MVC ===================================>>>>> FrontController Pattern : Fat Client Model -- Heavy ... Servlet 10 ==>> Servlet 1 (method 10)
+FrontController Pattern : 구조화되어 있지 않는 코드. 확장성이 없다.. 혼자 개발할 때는 괜찮다
+=====================>>>>> Factory Method Pattern (FMP) : FrontController Pattern에서 좋은 점인 서블릿 1개인 걸 가지고 옴..
+DispatcherServlet
+.. Component (부품?) : 인터페이스(주로 Controller) 기반으로 작성된 재사용성 강한 자바 클래스
+
+Factory.. 지금까지 알고 있는건 Connection(Resource) Factory.. Tomcat 제품 중 사용
+
+Controller Factory 생성
+ -- > Contoller impl.. 각각 컴포넌트 들이
+
+..
+DispatcherServlet
+1. command 값 받는다 (find)
+2. 공장(Factory.. 싱글톤 패턴) 리턴 받는다
+3. 공장이 하는 역할.. 제품(컴포넌트)들 생성 createComponent("여기 들어온 값이 컴포넌트" find) {  } ControllerFactory에게 호출 --> Controller로 리턴
+4. Controller의 추상 메서드 호출 : c.execute() .. 실제 동작하는 건 실질적인 자식 ---> String path로 리턴
+5. 네비게이션
+
+Component가 DAO와 연결 - DAO는 DB랑 연결
+
+===================================================================================================
+
+DispatcherServlet --- command --> Factory
+                        <-- Interface ---
+                        ---- execute --->
+                        <--- path -----
+
+===================================================================================================
+
+1. 요구사항
+2. DB 모델링
+3. 화면
+4. 구현
+    ① VO
+    ② DAO
+    ③ 화면단(일단 간단하게..) 또는 컴포넌트
+    ④ 팩토리
+    ⑤ Dispatcher
