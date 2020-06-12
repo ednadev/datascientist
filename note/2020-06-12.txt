@@ -1,0 +1,112 @@
+Factory Method Pattern
+-- 현재 상황
+컴포넌트 리턴 타입 : String
+Controller - execute 리턴 타입 : String
+
+forward 또는 redirect로 받는 방식 고치고 비동기!
+
+=======================================
+
+ModelAndView : 필드에 데이터 타입이 boolean일 때 유용
+boolean의 기본값이 false니까 forward가 기본!
+
+만드는 순서
+1. ModelAndView 클래스
+2. Controller 인터페이스
+3. FindController 클래스 (컴포넌트)
+4. HandlerMapping 클래스 (공장 - 싱글톤) : command 값에 따라 handling 해서 컴포넌트 mapping
+5. DispatcherServlet
+
+---> 라이브러리로 바뀌는 부분 : DispatcherServlet, HandlerMapping, Controller, ModelAndView
+남는건 : Component와 결과페이지(jsp)
+
+
+18을 22번으로~~~ id 체크까지 해놓으면
+이제 남는건 비동기!!
+
+다음주 월요일 비동기 알고리즘 - 발표까지...;;
+
+
+================================오후 수업!!
+[Front] Ajax          + [Back] RestfulAPI
+1. JavaScript
+2. JQuery
+3. Vue.js - Axio
+
+
+Ajax (Asynchronized JavaScript and XML)  + Restful
+- 예전에는 10~12개 정도를 회원가입할 때 작성했던..
+- 썸네일 확대시 그 이미지로 선택되었을 때.. 바껴지는 부분은 사진이 나타나는 부분 밖에 없는데 전체가 다 새로고침
+------> 바뀌는 부분만 바뀌도록.. 요청이 전면부(새로고침)가 아닌 백그라운드(부분)로 응답
+- 검색할 때 자동완성기능 (Auto Complish)
+
+1. 결과 페이지가 따로 없다. 요청 페이지로 다시 넘어간다
+2. 전체가 받는 게 아닌 일부에서만 받는다
+
+동기식 : 결과 페이지가 따로 있음.. 전체가 응답한다
+jsp는 서버사이드 페이지.. Tomcat  / 배포만 webserver에서 될 뿐
+
+Data, JSP 화면이 서버에 같이 있다.
+
+Angular -- React -- Vue가 왜 나온지도 알 수 있는..
+Device가 다양해짐 .. 데스크탑, 스마트폰 (아이폰, 안드로이드), 태블릿 .... 등등
+was에서 만든 화면이 모든 디바이스에 똑같이 뿌려져야 한다.. 문제는 굉장히 어거지스러운 느낌 
+ --> jsp는 웹에 딱 맞게 나온 것 뿐.. 화면단을 자기가 알고 있는 기술로 쓰고 싶은 것 뿐..
+      이런 문제점이 생긴 원인..? 서버사이드와 프론트사이드 기술이 유기적으로 연결되어 있어서 문제가 됨
+      결과 페이지를 클라이언트로 (즉, JSP를 쓰지마!) .. 클라이언트와 서버를 분리
+Attribute에 바인딩된 DATA만 클라이언트에게 넘긴다 .. 이 방식이 Restful ---> 서버와 클라이언트의 완벽한 분리!!
+
+메카니즘을 만든 기술이 Angular (이젠 못 씀..)
+구조적으로 어려워서 나온 것이 React 
+그리고 그다음으로 나온 기술이 Vue
+이 정도 되면 거의 바꾸지 않음 (React나 Vue 둘 중 하나 사용하면 됨)
+
+디바이스의 다각화로 이루어진 일!
+Data만 넘기는 Restful로 인해 ~~
+
+Maven + Spring Boot = Cross Domain.. 이건 나중 일
+
+Ajax는 데이터만 받아서 한 부분에서만 받는다.
+
+
+=========================================================
+
+XMLHttpRequest
+readyState가 중요!
+
+자바스크립트에 제공되는 내장 객체를 사용해야 한다.. 그게 XMLHttpRequest..
+변수를 전역변수를 사용한 이유는
+요청 함수와 응답 함수에서 둘 다 사용하니까
+
+{
+- onreadystatechange.. 응답을 받을 함수를 등록한다
+callback()이 아닌 callback인 이유는 지금 호출이 일어나지 않으므로
+callback()은 working이 작동되므로! callback은 미리 등록하는 것
+
+- readyState
+
+- status : 주식 중개 프로그램 할 때.. 성공 실패 여부는 꼭 넣어야 한다고 했던... (405번 - doget, dopost 방식 오류)
+      (500번 에러.. 등등.. )
+STATUS CODE
+4xx : client(클라이언트) 에러
+5xx : 서버 (측) 에러 --> 로직
+200 : 성공했을 때 .. 화면 결과가 나오므로 잘 볼 수 없다
+
+- open()
+
+- send() : get방식 - null
+             post방식 - key=value
+
+- responseText : 서버에서 보내는 데이터가 text인 경우
+- responseXML : 서버에서 보내는 데이터가 XML인 경우
+    + json : 객체로 받는 것 (객체로 보내는 서비스가 restful)
+}
+
+1. 탁구공 생성 : 서버와 관련이 없다 (readyState : 0)
+2. callback 연결 : 서버와 연결 X (readyState : 0)
+3. open("..Servlet") : 서버와 연결 (readyState : 1) .. 이때부터 비동기로 연결
+4. send() : 이때도 (readyState : 1)
+5. 서버 서블릿에서 responseText로 담겨오면서 readyState 코드 값(200)도 담김.. (readyState : 2 - 3) 요청해서 응답해오는 곳..
+6. 서버 갔다가 탁구공 깠을때가 (readyState : 4) ..성공해서 도착했을 때만 까보겠다
+
+자바스크립트라 서버 인코딩이 안됨
