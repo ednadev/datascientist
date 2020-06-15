@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            //$('#send').one(function() {
+           	$('#send').click(function() {
+                $.ajax({
+                    type: 'post',
+                    url: "http://localhost:8888/member.xml",
+                    dataType: "xml", //응답될때의 데이타 타입...xml, text, json... 주로 사용하지 않지만 json일때는 명시
+
+                    success:function(result){
+                        var str = '';
+                        $(result).find('member').each(function(index) {
+                            var id = $(this).find('id').text();
+                            var name = $(this).find('name').text();
+                            var addr = $(this).find('address').text();
+
+                            str += '<tr>';
+                            str += '<td>'+ id + '</td>';
+                            str += '<td>'+ name + '</td>';
+                            str += '<td>'+ addr + '</td>';
+                            str += '</tr>';
+                        });//each
+                        //기존 데이타 지우고 붙인다..
+                        $('#table tr:gt(0)').remove(); //0 제외 그 이상 선택.. lt는 반대
+
+                        //table에 붙인다..append
+                        $('#table').append(str);
+                    },//callback,
+                    error:function(err) {
+                        alert("오류발생====>" + err);
+                    }
+
+                });//ajax
+            });//click
+        });//ready
+    </script>
+</head>
+<body>
+    <h2>=======공공데이타 가져오기=======</h2>
+    <a href="#" id="send">XML 데이타 읽어들이기</a>
+    <p></p>
+    <table border="2" id="table" width="60%">
+        <tr>
+            <th>아이디</th><th>이 름</th><th>주 소</th>
+        </tr>
+        <!-- 출력 -->
+    </table>
+</body>
+</html>

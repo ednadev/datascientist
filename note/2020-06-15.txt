@@ -1,0 +1,30 @@
+비동기.. 요청하고 부분적으로 페이지 응답 (결과 페이지가 따로 X)
+동기.. 전체 페이지가 반응
+
+비동기 : JavaScript / JQuery
+비동기 기술은 서버 사이드의 RESTful과 연관이 있다
+
+이 기술이 가장 최적화된 것이 Vue.. Axios
+
+비동기는 자바스크립트 기술
+XMLHttpRequest
+
+XMLHttpRequest의 readyState 0~4
+객체 생성했을 때 0
+open 이후 1
+건너 갔다 오는 과정이 2, 3
+갔다 와서 브라우저에 안착 했을 때 4
+
+---- 오전 : keyevent로 id 처리
+---- 오후 : jQuery로 변경
+
+
+공공데이터 방식 - CSV, XML, JSON ... 핸들링을 어떻게 할 건지, 알고리즘이랑 연결해서 사용
+https://www.data.go.kr/ 
+데이터찾기 - 데이터목록 - 표준데이터 ---> 바로 사용 가능
+
+member.xml
+info는 껍데기
+member
+
+C:\kmg\apache-tomcat-8.5.55\webapps\ROOT : member.xml 위치

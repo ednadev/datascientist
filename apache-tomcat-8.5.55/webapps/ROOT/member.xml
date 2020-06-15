@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+	<member>
+		<id>hr112</id>
+		<name>이효리</name>
+		<address>제주</address>
+	</member>
+	<member>
+		<id>ss77</id>
+		<name>성유리</name>
+		<address>서울</address>
+	</member>
+	<member>
+		<id>jin33</id>
+		<name>이진</name>
+		<address>뉴욕</address>
+	</member>
+</info>
