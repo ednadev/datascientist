@@ -1,0 +1,30 @@
+View
+- Template 사용 -> Customizing
+- HTML5/CSS3/JQuery/Bootstrap
+  Customizing
+==============================
+웹 마무리..
+프로젝트 할 때 들어가야 하는 기능.. 요구사항
+
+.... 내일 : 웹 프로젝트 시작 (2주 정도)
+DB 모델링, 문서 등 작업
+
+
+================================= 소스 코드 구현 순서도 체크!
+DB.. 스키마부터 새로 생성.. 테이블까지 완료되고 샘플 데이터도 추가
+VO 완성! 
+---- (인터페이스) -- 
+DAO 정식적으로 만드는 포맷으로 설정 (DataSourceManager : 네이밍 서비스를 이용해서 데이터 소스 하나를 얻어오는 것까지)
+ --> DAO는 공통적인 것과 공통적이지 않은 것으로 분리
+
+DataSoureManager --- META-INF : Context.xml
+--> DataSourceManager 에서 연결하고.. 드디어 DAO (ItemDao)
+
+------------> Front (index.jsp) : 이때는 간편하게..
+itemList.do로 요청 ---> DispatcherServlet이 요청을 받음.. annotation : *.do
+command = itemList.do..  ---> HandlerMapping한테 보냄 (itemList.do).. 
+Controller (인터페이스) 기반으로 ItemListController (컴포넌트)
+
+CBD --> Component Based Development 기반 개발 방식
+
+itemList.jsp로 응답
