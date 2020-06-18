@@ -15,6 +15,7 @@ public class DataSourceManager {
 	private DataSourceManager() {
 		//InitialContext 객체의 lookup()을 이용해서 ds하나 받아오는 로직..
 		try {
+			//단위테스트 할 때는 DriveManager 사용
 			InitialContext ic = new InitialContext();	
 			ds = (DataSource)ic.lookup("java:comp/env/jdbc/mysql");
 			System.out.println("DataSource Lookup OK...");

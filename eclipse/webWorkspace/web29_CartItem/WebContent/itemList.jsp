@@ -18,12 +18,12 @@
 			float: left;
 			margin-right: 5px;
 		}
-		img {
+		#container img {
 			width: 150px;
 			height: 150px;
 			border: 2px solid purple;
 		}
-		img:hover {
+		#container img:hover {
 			border: 2px solid blue;
 			cursor: pointer;
 		}
@@ -56,12 +56,26 @@
 	<div id="container">
 		<c:forEach items="${list}" var="fruit">
 			<div>
-				<a id="${fruit.itemNumber}" value="${fruit.name}" href="itemInfo.do?id=${fruit.itemNumber}&count=${fruit.count+1}" onclick="addProduct(this)"><img src="${fruit.url}"></a>
+				<%-- <a id="${fruit.itemNumber}" value="${fruit.name}" href="itemView.do?id=${fruit.itemNumber}" onclick="addProduct(this)"><img src="${fruit.url}"></a> --%>
+				<a href="itemView.do?id=${fruit.itemNumber}"><img src="${fruit.url}"></a>
 				<p>상품명 : ${fruit.name}</p>
 				<p>가 격 : ${fruit.price}원</p>
 			</div>
 		</c:forEach>
 	</div>
-	<p id="productView"></p>
+	
+	<!-- 오늘 본 상품정보를 이곳에다가 출력.. -->
+	<c:if test="${not empty fruits}">
+		<h2 align="center"><font color="purple">오늘 본 상품들</font></h2>
+		<table align="center" bgcolor="lightgray">
+			<tr>
+				<c:forEach items="${fruits}" var="fuit">
+					<td>
+						<img src="${fuit}" width="100" height="100">
+					</td>
+				</c:forEach>
+			</tr>
+		</table>
+	</c:if>
 </body>
 </html>

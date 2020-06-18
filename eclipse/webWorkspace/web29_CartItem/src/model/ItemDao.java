@@ -97,7 +97,26 @@ public class ItemDao {
 		return item;
 	}
 	
-	public void updateCount(int count, int id) throws SQLException {
+	public boolean updateRecordCount(int itemid) throws SQLException {
+		boolean result = false;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			String query = "UPDATE item SET count=count+1 WHERE item_id=?";
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, itemid);
+			int row = ps.executeUpdate(); //0,1
+			if(row>0) result = true;
+		} finally {
+			closeAll(rs, ps, conn);
+		}
+		
+		return result;
+	}
+	/*public void updateCount(int count, int id) throws SQLException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		
@@ -111,6 +130,6 @@ public class ItemDao {
 		} finally {
 			closeAll(ps, conn);
 		}
-	}
+	}*/
 	
 }

@@ -13,9 +13,9 @@ public class HandlerMapping {
 		if(command.equals("itemList.do")) {
 			controller = new ItemListController();
 			System.out.println("ItemListController 생성됨....");
-		} else if(command.equals("itemInfo.do")) {
-			controller = new ItemInfoController();
-			System.out.println("ItemInfoController 생성됨....");
+		} else if(command.equals("itemView.do")) {
+			controller = new ItemViewController();
+			System.out.println("ItemViewController 생성됨....");
 		}
 		
 		return controller;

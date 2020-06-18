@@ -17,7 +17,16 @@
             padding: 5px;
             box-sizing: border-box;
         }
+        #title button {
+        	background: transparent;
+		    border: none;
+		    font-size: 1rem;
+        }
         #title a {
+        	text-decoration: none;
+        	color: black;
+        }
+        #title button, a {
             margin-left: 40px;
         }
         #desc {
@@ -48,12 +57,22 @@
             margin: 40px;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    	$(function() {
+    		$('[name=cartinsert]').click(function() {
+    			localStorage.setItem($(this).attr('id'), $(this).val());
+    			alert("장바구니에 담겨졌습니다");
+    		});
+    	});
+    </script>
 </head>
 <body>
 	<h1>${item.name} 의 정보</h1>
 	<p id="title">
-        조회수 : ${item.count}
-        <a href="#">장바구니 담기</a>
+       	 조회수 : ${item.count}
+        <button name="cartinsert" id="${item.itemNumber}" value="${item.url}, ${item.name}, ${item.price}, 1">장바구니 담기</button>
+        <a href="cartList.jsp">장바구니 확인</a>
     </p>
     <div id="desc">
         <div id="left-image">
@@ -63,7 +82,7 @@
         <div id="right-content">
             <p>종 류 : ${item.name}</p>
             <p>가 격 : ${item.price}</p>
-            <p style="margin-top: 100px;">설 명 : 눈 건강 살리고 피로 회복, 혈압 안정시키는 비타민 A가 많다</p>
+            <p style="margin-top: 100px;">설 명 : ${item.description}</p>
         </div>
     </div>
 </body>
